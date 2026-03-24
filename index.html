@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Victor Salazar — Data Analyst</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #0d0d0d;
+      --bg2: #111111;
+      --accent: #00c8b4;
+      --accent2: #c87c00;
+      --text: #e8e4de;
+      --text-muted: #6b6660;
+      --border: rgba(232,228,222,0.08);
+      --card: rgba(22,22,22,0.95);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.4rem 5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; }
+    .nav-logo span { color: var(--text-muted); }
+    .nav-links { display: flex; gap: 2.5rem; list-style: none; }
+    .nav-links a { color: var(--text-muted); text-decoration: none; font-size: 0.78rem; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links a:hover { color: var(--text); }
+    section { position: relative; z-index: 1; }
+
+    /* HERO */
+    #inicio {
+      min-height: 100vh;
+      display: grid; grid-template-columns: 1fr 400px;
+      align-items: center; gap: 4rem;
+      padding: 0 5rem; padding-top: 80px; overflow: hidden;
+    }
+    .hero-eyebrow {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--accent);
+      letter-spacing: 0.25em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 1rem; margin-bottom: 2rem;
+    }
+    .hero-eyebrow::before { content: ''; width: 32px; height: 1px; background: var(--accent); flex-shrink: 0; }
+    .hero-name { font-family: 'DM Serif Display', serif; font-size: clamp(4rem, 8vw, 7rem); line-height: 0.95; letter-spacing: -0.02em; margin-bottom: 2rem; }
+    .hero-name .firstname { color: var(--text); display: block; }
+    .hero-name .lastname { color: transparent; -webkit-text-stroke: 1px rgba(232,228,222,0.2); display: block; font-style: italic; }
+    .hero-desc { font-size: 1rem; color: var(--text-muted); line-height: 1.75; max-width: 460px; margin-bottom: 3rem; font-weight: 300; }
+    .hero-ctas { display: flex; gap: 1rem; align-items: center; }
+    .btn-primary { padding: 0.8rem 2rem; background: var(--accent); color: #0d0d0d; font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.82rem; letter-spacing: 0.08em; text-decoration: none; text-transform: uppercase; transition: all 0.3s; border: 1px solid var(--accent); }
+    .btn-primary:hover { background: transparent; color: var(--accent); }
+    .btn-ghost { padding: 0.8rem 2rem; background: transparent; color: var(--text-muted); font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.82rem; letter-spacing: 0.08em; text-decoration: none; text-transform: uppercase; border: 1px solid var(--border); transition: all 0.3s; }
+    .btn-ghost:hover { border-color: var(--text-muted); color: var(--text); }
+
+    .hero-right { display: flex; flex-direction: column; align-items: flex-end; gap: 1rem; }
+    .hero-img-wrap { width: 100%; max-width: 360px; aspect-ratio: 3/4; position: relative; overflow: hidden; }
+    .hero-img-wrap::before { content: ''; position: absolute; inset: 0; border: 1px solid rgba(0,200,180,0.2); z-index: 2; pointer-events: none; }
+    .hero-img-wrap img { width: 100%; height: 100%; object-fit: cover; object-position: top; display: block; filter: contrast(1.05) saturate(0.9); }
+    .hero-img-placeholder { width: 100%; height: 100%; background: linear-gradient(135deg, #1a1a1a 0%, #2a2018 50%, #1a1a1a 100%); display: flex; align-items: center; justify-content: center; }
+    .hero-img-placeholder span { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--text-muted); letter-spacing: 0.12em; text-align: center; padding: 0 1.5rem; line-height: 1.8; }
+    .hero-stats { width: 100%; max-width: 360px; display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--border); }
+    .stat-item { padding: 1rem; text-align: center; border-right: 1px solid var(--border); }
+    .stat-item:last-child { border-right: none; }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 1.6rem; color: var(--accent); display: block; }
+    .stat-lbl { font-family: 'Space Mono', monospace; font-size: 0.6rem; color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.2rem; }
+
+    /* SOBRE MÍ */
+    #sobre-mi { padding: 9rem 5rem; background: var(--bg2); border-top: 1px solid var(--border); }
+    .section-eyebrow { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--accent); letter-spacing: 0.2em; text-transform: uppercase; display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+    .section-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--accent); }
+    .section-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.2rem, 4vw, 3.2rem); line-height: 1.1; letter-spacing: -0.02em; margin-bottom: 4rem; }
+    .about-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: 6rem; align-items: start; }
+    .about-text p { color: var(--text-muted); line-height: 1.85; font-size: 0.98rem; margin-bottom: 1.4rem; font-weight: 300; }
+    .about-text strong { color: var(--text); font-weight: 500; }
+    .skills-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .skill-row { display: flex; flex-direction: column; gap: 0.5rem; }
+    .skill-top { display: flex; justify-content: space-between; align-items: baseline; }
+    .skill-name { font-size: 0.8rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: var(--text); }
+    .skill-lvl { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text-muted); }
+    .skill-track { height: 2px; background: rgba(255,255,255,0.05); position: relative; }
+    .skill-fill { position: absolute; top: 0; left: 0; height: 100%; background: linear-gradient(90deg, var(--accent), var(--accent2)); transition: width 1.4s cubic-bezier(0.16,1,0.3,1); }
+
+    /* PROYECTOS */
+    #proyectos { padding: 9rem 5rem; border-top: 1px solid var(--border); }
+    .projects-list { display: flex; flex-direction: column; margin-top: 3rem; border-top: 1px solid var(--border); }
+    .project-row { display: grid; grid-template-columns: 60px 1fr auto; gap: 2rem; align-items: center; padding: 2rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: all 0.3s; }
+    .project-row:hover { padding-left: 1rem; }
+    .project-row:hover .proj-num { color: var(--accent); }
+    .proj-num { font-family: 'Space Mono', monospace; font-size: 0.7rem; color: var(--text-muted); letter-spacing: 0.1em; transition: color 0.3s; }
+    .proj-info { display: flex; flex-direction: column; gap: 0.4rem; }
+    .proj-title { font-family: 'DM Serif Display', serif; font-size: 1.4rem; letter-spacing: -0.01em; }
+    .proj-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+    .proj-tag { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; padding: 0.2rem 0.6rem; border: 1px solid var(--border); }
+    .proj-arrow { font-size: 1.2rem; color: var(--text-muted); transition: all 0.3s; }
+    .project-row:hover .proj-arrow { color: var(--accent); transform: translateX(4px); }
+    .proj-soon { opacity: 0.35; pointer-events: none; }
+
+    /* ARTÍCULOS */
+    #articulos { padding: 9rem 5rem; background: var(--bg2); border-top: 1px solid var(--border); }
+    .articles-list { display: flex; flex-direction: column; margin-top: 3rem; border-top: 1px solid var(--border); }
+    .article-row { display: grid; grid-template-columns: 120px 1fr auto; gap: 2rem; align-items: center; padding: 2rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: all 0.3s; }
+    .article-row:hover { padding-left: 1rem; }
+    .article-row:hover .art-date { color: var(--accent); }
+    .art-date { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.08em; transition: color 0.3s; }
+    .art-info { display: flex; flex-direction: column; gap: 0.5rem; }
+    .art-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; letter-spacing: -0.01em; line-height: 1.3; }
+    .art-desc { font-size: 0.85rem; color: var(--text-muted); font-weight: 300; }
+    .art-tag { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border: 1px solid rgba(200,124,0,0.25); width: fit-content; }
+    .art-arrow { font-size: 1.2rem; color: var(--text-muted); transition: all 0.3s; }
+    .article-row:hover .art-arrow { color: var(--accent); transform: translateX(4px); }
+    .art-soon { opacity: 0.35; pointer-events: none; }
+
+    /* CONTACTO */
+    #contacto { padding: 9rem 5rem; border-top: 1px solid var(--border); }
+    .contact-inner { max-width: 640px; }
+    .contact-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    .contact-title em { color: var(--accent); font-style: italic; }
+    .contact-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; font-weight: 300; margin-bottom: 3rem; max-width: 460px; }
+    .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .c-link { display: flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.6rem; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em; transition: all 0.3s; }
+    .c-link:hover { border-color: var(--accent); color: var(--accent); }
+    .c-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+    footer { padding: 1.8rem 5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .footer-txt { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--text-muted); }
+    .footer-txt span { color: var(--accent); }
+
+    .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    .hero-left { animation: fadeUp 0.9s ease forwards; }
+    .hero-right { animation: fadeUp 0.9s ease 0.2s both; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); }
+
+    @media (max-width: 960px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links { gap: 1.2rem; }
+      #inicio { grid-template-columns: 1fr; padding: 6rem 1.5rem 4rem; gap: 3rem; }
+      .hero-right { align-items: center; }
+      .hero-img-wrap, .hero-stats { max-width: 100%; }
+      #sobre-mi, #proyectos, #articulos, #contacto { padding: 5rem 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .project-row, .article-row { grid-template-columns: 1fr auto; }
+      .proj-num, .art-date { display: none; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-logo">VS<span>_</span>DATA</div>
+  <ul class="nav-links">
+    <li><a href="#inicio">Inicio</a></li>
+    <li><a href="#sobre-mi">Sobre mí</a></li>
+    <li><a href="#proyectos">Proyectos</a></li>
+    <li><a href="#articulos">Artículos</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+  </ul>
+</nav>
+
+<section id="inicio">
+  <div class="hero-left">
+    <div class="hero-eyebrow">Data Analyst · Lima, Perú</div>
+    <h1 class="hero-name">
+      <span class="firstname">Victor</span>
+      <span class="lastname">Salazar</span>
+    </h1>
+    <p class="hero-desc">Dar sentido a los datos y transformar flujos de información en herramientas útiles permite que las organizaciones crezcan de forma ordenada y basada en evidencia real.</p>
+    <div class="hero-ctas">
+      <a href="#proyectos" class="btn-primary">Ver Proyectos</a>
+      <a href="#contacto" class="btn-ghost">Contacto</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-img-wrap">
+      <img src="assets/profile.png" alt="Victor Salazar"
+           onerror="this.parentElement.innerHTML='<div class=\'hero-img-placeholder\'><span>GUARDA TU IMAGEN COMO<br>assets/profile.png</span></div>'"/>
+    </div>
+    <div class="hero-stats">
+      <div class="stat-item"><span class="stat-num">20+</span><span class="stat-lbl">Scripts SQL</span></div>
+      <div class="stat-item"><span class="stat-num">30+</span><span class="stat-lbl">Años datos</span></div>
+      <div class="stat-item"><span class="stat-num">SBS</span><span class="stat-lbl">Fuente oficial</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="sobre-mi">
+  <div class="fade-in">
+    <div class="section-eyebrow">Sobre mí</div>
+    <h2 class="section-title">Datos con propósito</h2>
+  </div>
+  <div class="about-grid">
+    <div class="about-text fade-in">
+      <p>Soy <strong>Data Analyst</strong> con enfoque en el sector financiero peruano. Me apasiona convertir grandes volúmenes de datos históricos en insights claros y accionables que apoyen la toma de decisiones.</p>
+      <p>Trabajo con datos reales de la <strong>SBS (Superintendencia de Banca, Seguros y AFP)</strong>, construyendo pipelines ETL completos desde la extracción de datos crudos hasta dashboards interactivos en Power BI.</p>
+      <p>Actualmente expandiendo mis habilidades en <strong>Python</strong> para automatización y análisis estadístico avanzado.</p>
+    </div>
+    <div class="skills-list fade-in">
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">SQL</span><span class="skill-lvl">Intermedio</span></div><div class="skill-track"><div class="skill-fill" style="width:72%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Power BI</span><span class="skill-lvl">Intermedio</span></div><div class="skill-track"><div class="skill-fill" style="width:68%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Excel</span><span class="skill-lvl">Intermedio</span></div><div class="skill-track"><div class="skill-fill" style="width:70%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Pandas</span><span class="skill-lvl">En desarrollo</span></div><div class="skill-track"><div class="skill-fill" style="width:45%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Python</span><span class="skill-lvl">En desarrollo</span></div><div class="skill-track"><div class="skill-fill" style="width:40%"></div></div></div>
+      <div class="skill-row"><div class="skill-top"><span class="skill-name">Jupyter</span><span class="skill-lvl">En desarrollo</span></div><div class="skill-track"><div class="skill-fill" style="width:42%"></div></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="proyectos">
+  <div class="fade-in">
+    <div class="section-eyebrow">Proyectos</div>
+    <h2 class="section-title">Análisis con datos reales</h2>
+  </div>
+  <div class="projects-list">
+    <a href="https://github.com/VicSalN/Analisis_Tasas_Peru" target="_blank" class="project-row fade-in">
+      <span class="proj-num">01</span>
+      <div class="proj-info">
+        <span class="proj-title">Análisis de Tasas de Interés — SBS Perú</span>
+        <div class="proj-meta">
+          <span class="proj-tag">Python</span><span class="proj-tag">SQL</span><span class="proj-tag">Power BI</span><span class="proj-tag">Pandas</span><span class="proj-tag">SBS</span>
+        </div>
+      </div>
+      <span class="proj-arrow">→</span>
+    </a>
+    <div class="project-row proj-soon fade-in">
+      <span class="proj-num">02</span>
+      <div class="proj-info">
+        <span class="proj-title">Próximo proyecto</span>
+        <div class="proj-meta"><span class="proj-tag">En desarrollo</span></div>
+      </div>
+      <span class="proj-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<section id="articulos">
+  <div class="fade-in">
+    <div class="section-eyebrow">Artículos</div>
+    <h2 class="section-title">Investigación y análisis</h2>
+  </div>
+  <div class="articles-list">
+    <a href="articulo-01.html" class="article-row fade-in">
+      <span class="art-date">MAR 2026</span>
+      <div class="art-info">
+        <span class="art-title">¿Cómo han evolucionado las tasas de interés en el Perú en los últimos 30 años?</span>
+        <span class="art-desc">Análisis histórico de la TAMN y TAMEX desde 1992. Shocks, tendencias y compresión del spread financiero.</span>
+        <span class="art-tag">Finanzas · SBS</span>
+      </div>
+      <span class="art-arrow">→</span>
+    </a>
+    <div class="article-row art-soon fade-in">
+      <span class="art-date">2026</span>
+      <div class="art-info">
+        <span class="art-title">Próximo artículo</span>
+        <span class="art-desc">Nuevos análisis sobre el sistema financiero peruano.</span>
+        <span class="art-tag">Por definir</span>
+      </div>
+      <span class="art-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="contact-inner fade-in">
+    <h2 class="contact-title">¿Hablamos<br>de <em>datos</em>?</h2>
+    <p class="contact-desc">Abierto a oportunidades, colaboraciones y proyectos de análisis de datos. No dudes en escribirme.</p>
+    <div class="contact-links">
+      <a href="https://github.com/VicSalN" target="_blank" class="c-link">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/victor-salazar-noel-72130b215/" target="_blank" class="c-link">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:andrez9070@gmail.com" class="c-link">
+        <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+        andrez9070@gmail.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-txt">© 2026 <span>Victor Salazar Noel</span> — Data Analyst</div>
+  <div class="footer-txt">Lima, Perú 🇵🇪</div>
+</footer>
+
+<script>
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.08 });
+  document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  const sections = document.querySelectorAll('section[id]');
+  const links = document.querySelectorAll('.nav-links a');
+  window.addEventListener('scroll', () => {
+    let cur = '';
+    sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
+    links.forEach(l => { l.style.color = l.getAttribute('href') === `#${cur}` ? 'var(--text)' : ''; });
+  });
+</script>
+</body>
+</html>
