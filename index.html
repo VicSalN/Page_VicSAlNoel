@@ -132,7 +132,7 @@
     .art-info { display: flex; flex-direction: column; gap: 0.5rem; }
     .art-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; letter-spacing: -0.01em; line-height: 1.3; }
     .art-desc { font-size: 0.85rem; color: var(#3d3d3f); font-weight: 300; }
-    .art-tag { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border: 1px solid rgba(44, 39, 32, 0.25); width: fit-content; }
+    .art-tag { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(#3d3d3f); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border: 1px solid rgba(44, 39, 32, 0.25); width: fit-content; }
     .art-arrow { font-size: 1.2rem; color: var(#3d3d3f); transition: all 0.3s; }
     .article-row:hover .art-arrow { color: var(#3d3d3f); transform: translateX(4px); }
     .art-soon { opacity: 0.35; pointer-events: none; }
@@ -178,7 +178,19 @@
 
     @media (max-width: 960px) {
       nav { padding: 1rem 1.5rem; }
-      .nav-links { gap: 1.2rem; }
+      .nav-links {
+        position: fixed;
+        top: 0; right: -100%;
+        width: 70%; max-width: 300px; height: 100vh;
+        background: rgba(10, 10, 10, 0.98);
+        flex-direction: column;
+        justify-content: center;
+        align-items: flex-start;
+        padding: 2rem;
+        gap: 1.8rem;
+        transition: right 0.35s ease;
+      }
+      .nav-links.active { right: 0; }
       #inicio { grid-template-columns: 1fr; padding: 6rem 1.5rem 4rem; gap: 3rem; }
       .hero-right { align-items: center; }
       .hero-img-wrap, .hero-stats { max-width: 100%; }
@@ -188,7 +200,7 @@
       .proj-num, .art-date { display: none; }
       footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
       .nav-toggle {
-      display: none;
+      display: flex;
       flex-direction: column;
       gap: 5px;
       background: none;
@@ -215,7 +227,7 @@
   <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
   <span></span><span></span><span></span>
   </button>
-  <ul class="nav-links">
+  <ul class="nav-links" id="navLinks">
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#sobre-mi">Sobre mí</a></li>
     <li><a href="#proyectos">Proyectos</a></li>
@@ -328,14 +340,14 @@
 <section id="bitacora">
   <div class="fade-in">
     <div class="section-eyebrow">Bitácora</div>
-    <h2 class="section-title">Aprendizaje Roadmap</h2>
+    <h2 class="section-title">Aprendizaje - Paso a Paso</h2>
   </div>
   <div class="bitacora-list">
     <div class="bitacora-row art-soon fade-in">
       <span class="bit-date">2026</span>
       <div class="bit-info">
-        <span class="bit-title">Próximo artículo</span>
-        <span class="bit-desc">Nuevos análisis sobre el sistema financiero peruano.</span>
+        <span class="bit-title">Lo aprendido</span>
+        <span class="bit-desc">En curso.</span>
         <span class="bit-tag">Por definir</span>
       </div>
       <span class="bit-arrow">→</span>
