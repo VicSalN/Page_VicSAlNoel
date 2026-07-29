@@ -108,29 +108,44 @@
     .article-row { display: grid; grid-template-columns: 120px 1fr auto; gap: 2rem; align-items: center; padding: 2rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: all 0.3s; }
     .article-row:hover { padding-left: 1rem; }
     .article-row:hover .art-date { color: var(--accent); }
-    .art-date { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.08em; transition: color 0.3s; }
+    .art-date { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(#3d3d3f); letter-spacing: 0.08em; transition: color 0.3s; }
     .art-info { display: flex; flex-direction: column; gap: 0.5rem; }
     .art-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; letter-spacing: -0.01em; line-height: 1.3; }
-    .art-desc { font-size: 0.85rem; color: var(--text-muted); font-weight: 300; }
+    .art-desc { font-size: 0.85rem; color: var(#3d3d3f); font-weight: 300; }
     .art-tag { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border: 1px solid rgba(44, 39, 32, 0.25); width: fit-content; }
-    .art-arrow { font-size: 1.2rem; color: var(--text-muted); transition: all 0.3s; }
-    .article-row:hover .art-arrow { color: var(--accent); transform: translateX(4px); }
+    .art-arrow { font-size: 1.2rem; color: var(#3d3d3f); transition: all 0.3s; }
+    .article-row:hover .art-arrow { color: var(#3d3d3f); transform: translateX(4px); }
     .art-soon { opacity: 0.35; pointer-events: none; }
 
+    /* BITÁCORA */
+    #bitacora { padding: 9rem 5rem; border-top: 1px solid var(--border); }
+    .bitacora-list { display: flex; flex-direction: column; margin-top: 3rem; border-top: 1px solid var(--border); }
+    .bitacora-row { display: grid; grid-template-columns: 120px 1fr auto; gap: 2rem; align-items: center; padding: 2rem 0; border-bottom: 1px solid var(--border); text-decoration: none; color: var(--text); transition: all 0.3s; }
+    .article-row:hover { padding-left: 1rem; }
+    .article-row:hover .art-date { color: var(--accent); }
+    .bit-date { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--text-muted); letter-spacing: 0.08em; transition: color 0.3s; }
+    .bit-info { display: flex; flex-direction: column; gap: 0.5rem; }
+    .bit-title { font-family: 'DM Serif Display', serif; font-size: 1.3rem; letter-spacing: -0.01em; line-height: 1.3; }
+    .bit-desc { font-size: 0.85rem; color: var(#3d3d3f); font-weight: 300; }
+    .bit-tag { font-family: 'Space Mono', monospace; font-size: 0.62rem; color: var(--accent2); letter-spacing: 0.1em; text-transform: uppercase; padding: 0.2rem 0.6rem; border: 1px solid rgba(44, 39, 32, 0.25); width: fit-content; }
+    .bit-arrow { font-size: 1.2rem; color: var(--text-muted); transition: all 0.3s; }
+    .bitacora-row:hover .art-arrow { color: var(--accent); transform: translateX(4px); }
+    .bit-soon { opacity: 0.35; pointer-events: none; }
+
     /* CONTACTO */
-    #contacto { padding: 9rem 5rem; border-top: 1px solid var(--border); }
+    #contacto { padding: 9rem 5rem; background: var(--bg2); border-top: 1px solid var(--border); }
     .contact-inner { max-width: 640px; }
     .contact-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
-    .contact-title em { color: var(--accent); font-style: italic; }
-    .contact-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; font-weight: 300; margin-bottom: 3rem; max-width: 460px; }
+    .contact-title em { color: var(#3d3d3f); font-style: italic; }
+    .contact-desc { font-size: 0.95rem; color: var(#3d3d3f); line-height: 1.75; font-weight: 300; margin-bottom: 3rem; max-width: 460px; }
     .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
     .c-link { display: flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.6rem; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em; transition: all 0.3s; }
     .c-link:hover { border-color: var(--accent); color: var(--accent); }
     .c-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
 
     footer { padding: 1.8rem 5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-    .footer-txt { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--text-muted); }
-    .footer-txt span { color: var(--accent); }
+    .footer-txt { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(#3d3d3f); }
+    .footer-txt span { color: var(#3d3d3f); }
 
     .fade-in { opacity: 0; transform: translateY(18px); transition: opacity 0.7s ease, transform 0.7s ease; }
     .fade-in.visible { opacity: 1; transform: translateY(0); }
@@ -164,6 +179,7 @@
     <li><a href="#sobre-mi">Sobre mí</a></li>
     <li><a href="#proyectos">Proyectos</a></li>
     <li><a href="#articulos">Artículos</a></li>
+    <li><a href="#bitacora">Bitácora</a></li>
     <li><a href="#contacto">Contacto</a></li>
   </ul>
 </nav>
@@ -264,6 +280,24 @@
         <span class="art-tag">Por definir</span>
       </div>
       <span class="art-arrow">→</span>
+    </div>
+  </div>
+</section>
+
+<section id="bitacora">
+  <div class="fade-in">
+    <div class="section-eyebrow">Bitácora</div>
+    <h2 class="section-title">Aprendizaje Roadmap</h2>
+  </div>
+  <div class="bitacora-list">
+    <div class="bitacora-row art-soon fade-in">
+      <span class="bit-date">2026</span>
+      <div class="bit-info">
+        <span class="bit-title">Próximo artículo</span>
+        <span class="bit-desc">Nuevos análisis sobre el sistema financiero peruano.</span>
+        <span class="bit-tag">Por definir</span>
+      </div>
+      <span class="bit-arrow">→</span>
     </div>
   </div>
 </section>
