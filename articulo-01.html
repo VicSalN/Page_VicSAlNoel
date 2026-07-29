@@ -7,12 +7,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     :root {
-      --bg: #282626;
-      --bg2: #3e3737;
-      --accent: #be8140;
-      --accent2: #873501;
-      --text: #e8e4de;
-      --text-muted: #928577;
+      --bg: #bec2ca;
+      --bg2: #a0a4b1;
+      --accent: #52555e;
+      --accent2: #60646b;
+      --text: #0a0b0c;
+      --text-muted: #52545a;
       --border: rgba(232,228,222,0.08);
     }
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -35,7 +35,8 @@
     .article-hero {
       padding: 10rem 5rem 5rem;
       border-bottom: 1px solid var(--border);
-      max-width: 860px;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     .art-meta {
@@ -46,7 +47,7 @@
     .art-tag {
       font-family: 'Space Mono', monospace; font-size: 0.65rem;
       color: var(--accent2); letter-spacing: 0.12em; text-transform: uppercase;
-      padding: 0.25rem 0.7rem; border: 1px solid rgba(200,124,0,0.3);
+      padding: 0.25rem 0.7rem; border: 1px solid rgba(112, 111, 126, 0.3);
     }
 
     .art-date {
@@ -59,6 +60,7 @@
       font-size: clamp(2rem, 5vw, 3.5rem);
       line-height: 1.1; letter-spacing: -0.02em;
       margin-bottom: 1.5rem;
+      max-width: 780px;
     }
 
     .art-subtitle {
@@ -74,6 +76,7 @@
       padding: 5rem;
       align-items: start;
       max-width: 1200px;
+      margin: 0 auto;
     }
 
     .article-content { max-width: 680px; }
@@ -230,6 +233,36 @@
       transition: color 0.3s;
     }
     .back-btn:hover { color: var(--accent); }
+    
+    /* ZOOM DE IMÁGENES */
+    .chart-placeholder img {
+      cursor: zoom-in;
+      transition: opacity 0.2s;
+    }
+    .chart-placeholder img:hover { opacity: 0.9; }
+
+    .img-modal {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 999;
+      align-items: center; justify-content: center;
+      padding: 3rem;
+      cursor: zoom-out;
+    }
+    .img-modal.active { display: flex; }
+    .img-modal img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      border: 1px solid var(--border);
+    }
+    .img-modal-close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-family: 'Space Mono', monospace;
+      color: #fff; font-size: 1.8rem;
+      cursor: pointer; line-height: 1;
+      background: none; border: none;
+    }
 
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
@@ -237,13 +270,15 @@
       .article-body { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 3rem; }
       .article-sidebar { position: static; }
       .article-footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; }
+      .img-modal { padding: 1rem; }
+      .img-modal-close { top: 1rem; right: 1rem; font-size: 1.5rem; }
     }
+    
   </style>
 </head>
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">VS<span>_</span>DATA</a>
   <a href="index.html#articulos" class="nav-back">← Artículos</a>
 </nav>
 
@@ -268,7 +303,7 @@
     <p>La Tasa Activa en Moneda Nacional (TAMN) muestra una tendencia bajista de largo plazo marcada por tres fases claramente distinguibles:</p>
     <ul>
       <li><strong>Fase 1 (1992–2000):</strong> Alta volatilidad con tasas que alcanzaron picos superiores al 37%, asociados a shocks macroeconómicos y ajustes del sistema financiero post-hiperinflación.</li>
-      <li><strong>Fase 2 (2000–2015):</strong> Descenso gradual desde ~25% hacia ~15%, reflejando la estabilización económica, mayor competencia bancaria y consolidación de la política monetaria del BCRP.</li>
+      <li><strong>Fase 2 (2000–2015):</strong> Descenso gradual desde un 25% hacia un 15%, reflejando la estabilización económica, mayor competencia bancaria y consolidación de la política monetaria del BCRP.</li>
       <li><strong>Fase 3 (2015–2025):</strong> Estabilización en rangos del 14–17%, con repuntes puntuales asociados a eventos como la pandemia COVID-19 y ciclos de política monetaria restrictiva.</li>
     </ul>
 
@@ -279,10 +314,10 @@
     </div>
 
     <h3>Volatilidad</h3>
-    <p>El período de mayor volatilidad se concentra en la <strong>década de los 90</strong>, con variaciones mensuales (MoM) de hasta <strong>+34 puntos porcentuales</strong>. A partir del 2005, la TAMN muestra una volatilidad intermensual muy baja, promediando ±1 pp por mes.</p>
+    <p>El período de mayor volatilidad se concentra en la <strong>década de los 90</strong>, con variaciones mensuales (MoM) de hasta <strong>+34 puntos porcentuales</strong>. A partir del 2005, la TAMN muestra una volatilidad intermensual muy baja, promediando ±1% por mes.</p>
 
     <div class="callout">
-      <div class="callout-label">📊 Dato clave</div>
+      <div class="callout-label">Dato clave</div>
       <p>El pico máximo de la TAMN fue registrado alrededor de <strong>1995–1997</strong>, superando el 37%, en el contexto de reformas estructurales del sistema financiero peruano.</p>
     </div>
 
@@ -292,19 +327,19 @@
 
     <div class="data-row">
       <div class="data-cell">
-        <span class="data-value">15.75 pp</span>
+        <span class="data-value">15.75%</span>
         <span class="data-label">Spread promedio histórico — Soles</span>
       </div>
       <div class="data-cell">
-        <span class="data-value">8.53 pp</span>
+        <span class="data-value">8.53%</span>
         <span class="data-label">Spread promedio histórico — Dólares</span>
       </div>
       <div class="data-cell">
-        <span class="data-value">30.52 pp</span>
+        <span class="data-value">30.52%</span>
         <span class="data-label">Spread máximo Soles (06/01/1995)</span>
       </div>
       <div class="data-cell">
-        <span class="data-value">14.19 pp</span>
+        <span class="data-value">14.19%</span>
         <span class="data-label">Spread máximo Dólares (12/03/1992)</span>
       </div>
     </div>
@@ -318,15 +353,15 @@
     <h3>Tendencia por década</h3>
     <p>El spread muestra una <strong>compresión sostenida a lo largo de las décadas</strong>, señal de un sistema financiero progresivamente más eficiente y competitivo:</p>
     <ul>
-      <li><strong>1990s:</strong> Spread en Soles promedio 15.50 pp · Dólares 10.87 pp</li>
-      <li><strong>2000s:</strong> Spread en Soles promedio 19.67 pp · Dólares 8.43 pp</li>
-      <li><strong>2010s:</strong> Spread en Soles promedio 14.58 pp · Dólares 7.21 pp</li>
-      <li><strong>2020s:</strong> Spread en Soles promedio 11.58 pp · Dólares 7.58 pp</li>
+      <li><strong>1990s:</strong> Spread en Soles promedio 15.50 % · Dólares 10.87 %</li>
+      <li><strong>2000s:</strong> Spread en Soles promedio 19.67 % · Dólares 8.43 %</li>
+      <li><strong>2010s:</strong> Spread en Soles promedio 14.58 % · Dólares 7.21 %</li>
+      <li><strong>2020s:</strong> Spread en Soles promedio 11.58 % · Dólares 7.58 %</li>
     </ul>
 
     <div class="callout">
-      <div class="callout-label">💡 Interpretación</div>
-      <p>La reducción del spread en Soles de ~20 pp (2000s) a ~11.5 pp (2020s) refleja mayor competencia bancaria, mejor infraestructura de crédito y reducción del riesgo país a lo largo del tiempo.</p>
+      <div class="callout-label">Interpretación</div>
+      <p>La reducción del spread en Soles del 20.00% (2000s) al 11.5% (2020s) refleja mayor competencia bancaria, mejor infraestructura de crédito y reducción del riesgo país a lo largo del tiempo.</p>
     </div>
 
     <h2>Metodología</h2>
@@ -378,5 +413,28 @@
   <div class="footer-txt">© 2026 <span>Victor Salazar Noel</span></div>
 </div>
 
+<div class="img-modal" id="imgModal">
+  <button class="img-modal-close" id="imgModalClose">×</button>
+  <img id="imgModalContent" src="" alt=""/>
+</div>
+
+<script>
+  const modal = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalContent');
+  const modalClose = document.getElementById('imgModalClose');
+
+  document.querySelectorAll('.chart-placeholder img').forEach(img => {
+    img.addEventListener('click', () => {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modal.classList.add('active');
+    });
+  });
+
+  function closeModal() { modal.classList.remove('active'); modalImg.src = ''; }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
 </body>
 </html>
