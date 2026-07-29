@@ -28,10 +28,30 @@
       background: rgba(10, 10, 10, 0.92); backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
     }
+
+    .nav-toggle {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+    z-index: 101;
+    }
+    .nav-toggle span {
+    width: 24px; height: 2px;
+    background: var(--text-muted);
+    transition: all 0.3s;
+    }
+    .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav-toggle.active span:nth-child(2) { opacity: 0; }
+    .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
     .nav-logo { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; }
     .nav-logo span { color: #383c42;}
-    .nav-links { display: flex; gap: 1.6rem; list-style: none; }
-    .nav-links a { color: #ebedf1;; text-decoration: none; font-size: 0.60rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s; }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a { color: #ebedf1;; text-decoration: none; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; transition: color 0.3s; }
     .nav-links a:hover { color: #5f6266;}
     section { position: relative; z-index: 1; }
 
@@ -167,13 +187,34 @@
       .project-row, .article-row { grid-template-columns: 1fr auto; }
       .proj-num, .art-date { display: none; }
       footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
-    }
+      .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.5rem;
+      z-index: 101;
+      }
+      .nav-toggle span {
+      width: 24px; height: 2px;
+      background: var(--text-muted);
+      transition: all 0.3s;
+      }
+      .nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .nav-toggle.active span:nth-child(2) { opacity: 0; }
+      .nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      }
   </style>
 </head>
 <body>
 
 <nav>
   <div class="nav-logo"></div>  
+  <button class="nav-toggle" id="navToggle" aria-label="Abrir menú">
+  <span></span><span></span><span></span>
+  </button>
   <ul class="nav-links">
     <li><a href="#inicio">Inicio</a></li>
     <li><a href="#sobre-mi">Sobre mí</a></li>
@@ -331,14 +372,26 @@
 <script>
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
-  }, { threshold: 0.08 });
+    }, { threshold: 0.08 });
   document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
-  const sections = document.querySelectorAll('section[id]');
-  const links = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id]');
+    const links = document.querySelectorAll('.nav-links a');
   window.addEventListener('scroll', () => {
     let cur = '';
     sections.forEach(s => { if (window.scrollY >= s.offsetTop - 120) cur = s.id; });
     links.forEach(l => { l.style.color = l.getAttribute('href') === `#${cur}` ? 'var(--text)' : ''; });
+  });
+  const navToggle = document.getElementById('navToggle');
+  const navLinks = document.getElementById('navLinks');
+  navToggle.addEventListener('click', () => {
+  navToggle.classList.toggle('active');
+  navLinks.classList.toggle('active');
+  });
+  document.querySelectorAll('.nav-links a').forEach(link => {
+    link.addEventListener('click', () => {
+      navToggle.classList.remove('active');
+      navLinks.classList.remove('active');
+    });
   });
 </script>
 </body>
