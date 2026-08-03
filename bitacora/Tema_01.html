@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Introducción a las Tecnologías de la Información — Victor Salazar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg: #bec2ca;
+      --bg2: #a0a4b1;
+      --accent: #52555e;
+      --accent2: #60646b;
+      --text: #0a0b0c;
+      --text-muted: #52545a;
+      --border: rgba(232,228,222,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.4rem 5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(13,13,13,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; text-decoration: none; }
+    .nav-logo span { color: var(--text-muted); }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--text-muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ARTICLE HERO */
+    .article-hero {
+        padding: 10rem 5rem 5rem;
+        border-bottom: 1px solid var(--border);
+        max-width: 1400px;
+        margin: 0 auto;
+        }
+
+    .art-meta {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .art-tag {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent2); letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.25rem 0.7rem; border: 1px solid rgba(112, 111, 126, 0.3);
+    }
+
+    .art-date {
+      font-family: 'Space Mono', monospace; font-size: 0.68rem;
+      color: var(--text-muted); letter-spacing: 0.1em;
+    }
+
+    .art-title {
+        font-family: 'DM Serif Display', serif;
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        line-height: 1.1; letter-spacing: -0.02em;
+        margin-bottom: 1.5rem;
+        max-width: none;
+        }
+
+    .art-subtitle {
+      font-size: 1.05rem; color: var(--text-muted);
+      line-height: 1.7; font-weight: 300; max-width: 1080px;
+    }
+
+    /* ARTICLE BODY */
+    /* DESPUÉS */
+    .article-body {
+        display: grid;
+        grid-template-columns: 1fr;
+        padding: 3rem 5rem;
+        align-items: start;
+        max-width: 1400px;
+        margin: 0 auto;
+        }
+
+.article-content { max-width: none; }
+
+    .article-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.7rem; letter-spacing: -0.01em;
+      margin: 3rem 0 1.2rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .article-content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+    .article-content h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); margin: 2rem 0 0.8rem;
+    }
+
+    .article-content p {
+      color: var(--text-muted); line-height: 1.85;
+      font-size: 0.98rem; margin-bottom: 1.4rem; font-weight: 300;
+    }
+
+    .article-content strong { color: var(--text); font-weight: 500; }
+
+    .article-content ul {
+      list-style: none; margin: 1rem 0 1.4rem; display: flex; flex-direction: column; gap: 0.6rem;
+    }
+
+    .article-content ul li {
+      color: var(--text-muted); font-size: 0.95rem; font-weight: 300;
+      padding-left: 1.2rem; position: relative; line-height: 1.7;
+    }
+
+    .article-content ul li::before {
+      content: '—'; position: absolute; left: 0;
+      color: var(--accent); font-size: 0.8rem;
+    }
+
+    /* DATA CALLOUT */
+    .callout {
+      border-left: 2px solid var(--accent);
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+      background: rgba(0,200,180,0.04);
+    }
+
+    .callout-label {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .callout p { color: var(--text); font-size: 0.9rem; margin: 0; font-weight: 400; }
+
+    /* DATA STAT */
+    .data-row {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    .data-cell {
+      background: var(--bg2); padding: 1.2rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.3rem;
+    }
+
+    .data-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.3rem; color: var(--accent);
+    }
+
+    .data-label {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      color: var(--text-muted); letter-spacing: 0.03em; line-height: 1.6;
+      text-transform: none;
+    }
+
+    /* IMAGEN PLACEHOLDER */
+    .chart-placeholder {
+      width: 100%; max-width: 800px; aspect-ratio: 16/9;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.5rem;
+      margin: 2rem auto;
+    }
+
+    .chart-placeholder span {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--text-muted); letter-spacing: 0.12em; text-align: center;
+      padding: 0 2rem;
+    }
+
+    .chart-placeholder img { width: 100%; height: 100%; object-fit: contain; }
+
+    .toc-link {
+      display: block; font-size: 0.8rem; color: var(--text-muted);
+      text-decoration: none; padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s; font-weight: 300;
+    }
+    .toc-link:hover { color: var(--accent); }
+
+    /* ZOOM DE IMÁGENES */
+    .chart-placeholder img {
+      cursor: zoom-in;
+      transition: opacity 0.2s;
+    }
+    .chart-placeholder img:hover { opacity: 0.9; }
+
+    .img-modal {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 999;
+      align-items: center; justify-content: center;
+      padding: 3rem;
+      cursor: zoom-out;
+    }
+    .img-modal.active { display: flex; }
+    .img-modal img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      border: 1px solid var(--border);
+    }
+    .img-modal-close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-family: 'Space Mono', monospace;
+      color: #fff; font-size: 1.8rem;
+      cursor: pointer; line-height: 1;
+      background: none; border: none;
+    }
+
+    /* CASO — bloque destacado */
+    .case-block {
+      border: 1px solid var(--border);
+      background: var(--bg2);
+      padding: 1.8rem;
+      margin: 2rem 0;
+    }
+    .case-block h4 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem; margin-bottom: 0.8rem; color: var(--text);
+    }
+    .case-step {
+      font-family: 'Space Mono', monospace; font-size: 0.62rem;
+      color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+      margin: 1.4rem 0 0.5rem;
+    }
+
+    /* CONTACTO */
+    #contacto { padding: 6rem 5rem; background: var(--bg); border-top: 1px solid var(--border); max-width: 1400px; margin: 0 auto; }
+    .contact-inner { max-width: 1040px; }
+    .contact-title { font-family: 'DM Serif Display', serif; font-size: clamp(2.5rem, 5vw, 4.5rem); line-height: 1.05; letter-spacing: -0.02em; margin-bottom: 1.5rem; }
+    .contact-title em { color: var(--text-muted); font-style: italic; }
+    .contact-desc { font-size: 0.95rem; color: var(--text-muted); line-height: 1.75; font-weight: 300; margin-bottom: 3rem; max-width: 460px; }
+    .contact-links { display: flex; gap: 1rem; flex-wrap: wrap; }
+    .c-link { display: flex; align-items: center; gap: 0.6rem; padding: 0.8rem 1.6rem; border: 1px solid var(--border); color: var(--text-muted); text-decoration: none; font-size: 0.82rem; font-weight: 500; letter-spacing: 0.05em; transition: all 0.3s; }
+    .c-link:hover { border-color: var(--accent); color: var(--accent); }
+    .c-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+
+    footer { padding: 1.8rem 5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .footer-txt { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--text-muted); }
+    .footer-txt span { color: var(--text-muted); }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .article-hero { padding: 8rem 1.5rem 3rem; }
+      .article-body { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 3rem; }
+      .data-row { grid-template-columns: 1fr; }
+      .img-modal { padding: 1rem; }
+      .img-modal-close { top: 1rem; right: 1rem; font-size: 1.5rem; }
+      #contacto { padding: 4rem 1.5rem; }
+      footer { padding: 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+    }
+
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html#bitacora" class="nav-back">← Bitácora</a>
+  <a href="../index.html#inicio" class="nav-back">← Inicio</a>
+</nav>
+
+<div class="article-hero">
+  <div class="art-meta">
+    <span class="art-tag">TI · Ciencia de Datos</span>
+    <span class="art-date">Agosto 2026</span>
+  </div>
+  <h1 class="art-title">Introducción a las Tecnologías de la Información</h1>
+  <p class="art-subtitle">Notas del Tema 1 de Cibertec: el ecosistema TI, sus componentes, la transformación digital y las tendencias tecnológicas actuales.</p>
+</div>
+
+<div class="article-body">
+  <div class="article-content">
+
+    <h2>Introducción</h2>
+    <p>Las Tecnologías de la Información (TI) son el conjunto de herramientas, infraestructuras, sistemas y servicios que permiten capturar, procesar, almacenar y transmitir información por medios digitales. En un contexto de transformación digital constante, entender cómo funcionan es cada vez más relevante sin importar la especialidad de cada profesional.</p>
+    <p>En las organizaciones modernas, las TI hacen posible automatizar procesos, mejorar la toma de decisiones, optimizar recursos e impulsar la innovación. Desde el comercio electrónico hasta los sistemas de gestión empresarial, están presentes en prácticamente todos los sectores productivos.</p>
+
+    <h2>Ecosistema TI</h2>
+    <p>El ecosistema de Tecnologías de la Información agrupa tecnologías, recursos y procesos que interactúan entre sí para gestionar y aprovechar la información dentro de una organización. Entenderlo ayuda a ver cómo la infraestructura, el software, los datos y las personas se integran para sostener las operaciones digitales.</p>
+
+    <h3>¿Qué es un ecosistema TI?</h3>
+    <p>Es el conjunto organizado e interdependiente de tecnologías, personas, procesos y herramientas que le permite a una empresa operar digitalmente. Funciona de forma similar a un ecosistema natural:</p>
+    <ul>
+      <li>Cada elemento cumple un rol específico.</li>
+      <li>Los elementos se relacionan entre sí.</li>
+      <li>Dependen unos de otros para mantener el equilibrio tecnológico del conjunto.</li>
+    </ul>
+
+    <div class="chart-placeholder">
+      <img src="Tema01_1.png" alt="Ecosistema TI"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <span style="display:none">GRÁFICO: Componentes del ecosistema TI (Infraestructura, Software, Datos, Personas y Procesos)</span>
+    </div>
+
+    <p>Un ecosistema TI bien diseñado debe cumplir cinco condiciones: ser <strong>integrado</strong>, <strong>seguro</strong>, <strong>escalable</strong>, <strong>flexible</strong> y <strong>eficiente</strong>.</p>
+
+    <h2>Componentes del Ecosistema TI</h2>
+    <p>El ecosistema TI se organiza en cuatro grandes categorías que trabajan de forma coordinada: infraestructura tecnológica, software, datos, y personas y procesos.</p>
+
+    <h3>Infraestructura tecnológica — la base física</h3>
+    <p>Agrupa todo el hardware y las redes necesarios para que el sistema informático funcione:</p>
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">Hardware</span>
+        <span class="data-label">Servidores, equipos personales, dispositivos móviles, almacenamiento (HDD, SSD, SAN, NAS) y periféricos.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Redes</span>
+        <span class="data-label">Routers, switches, firewalls, cableado estructurado, WiFi y redes LAN, WAN y VPN.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Centros de datos</span>
+        <span class="data-label">Salas de servidores, sistemas de energía y climatización, y esquemas de respaldo y continuidad.</span>
+      </div>
+    </div>
+
+    <h3>Software — la parte lógica</h3>
+    <p>Comprende los programas que permiten operar la tecnología:</p>
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">Sistemas operativos</span>
+        <span class="data-label">Windows, Linux, macOS.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Aplicaciones empresariales</span>
+        <span class="data-label">ERP, CRM y SCM.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Software de productividad</span>
+        <span class="data-label">Suite ofimática y herramientas colaborativas.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Software en la nube</span>
+        <span class="data-label">Aplicaciones SaaS como Gmail, Microsoft 365 y Salesforce.</span>
+      </div>
+    </div>
+
+    <h3>Datos — el recurso más valioso</h3>
+    <p>Los datos son el eje del ecosistema TI, porque son la base de todo análisis, toma de decisiones y automatización. Incluyen las bases de datos, la información de clientes, ventas, inventarios y procesos, los sistemas de almacenamiento, y las políticas de calidad, seguridad y privacidad (cifrado, respaldos).</p>
+
+    <h3>Personas y procesos — el componente humano y metodológico</h3>
+    <p>Del lado humano participan usuarios finales, administradores de TI, soporte técnico, ingenieros de redes, desarrolladores de software y analistas de datos. Del lado metodológico, se apoyan en marcos como:</p>
+    <ul>
+      <li><strong>ITIL</strong>, para la gestión de servicios de TI.</li>
+      <li><strong>COBIT</strong>, para la gobernanza tecnológica.</li>
+      <li><strong>DevOps</strong>, que combina automatización, desarrollo y operaciones.</li>
+      <li><strong>ISO 27001</strong>, para la gestión de seguridad de la información.</li>
+    </ul>
+    <p>Estos marcos aseguran que la tecnología se use de forma organizada, controlada y eficiente.</p>
+
+    <h2>Infraestructura Tecnológica</h2>
+    <p>La infraestructura tecnológica es la base sobre la que operan los sistemas de información de una organización: recursos físicos y virtuales que procesan, almacenan, transmiten y protegen la información, garantizando que la tecnología funcione de forma eficiente, segura y disponible. Es la columna vertebral del ecosistema TI y se divide en cuatro capas:</p>
+
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">1. Infraestructura física</span>
+        <span class="data-label">Estaciones de trabajo, dispositivos móviles, routers/switches/firewalls, cableado y puntos de acceso, data centers.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">2. Infraestructura virtual</span>
+        <span class="data-label">Máquinas virtuales, contenedores (Docker, Kubernetes) y redes definidas por software (SDN), que reducen costos y aumentan la escalabilidad.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">3. Infraestructura en la nube</span>
+        <span class="data-label">IaaS, PaaS, SaaS y FaaS. Ejemplos: AWS, Microsoft Azure, Google Cloud.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">4. Infraestructura de seguridad</span>
+        <span class="data-label">Firewalls, sistemas IDS/IPS, antimalware, cifrado, políticas de acceso y copias de seguridad.</span>
+      </div>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Idea central</div>
+      <p>El ecosistema TI integra infraestructura, software, datos y personas para lograr operaciones más eficientes, seguras y estratégicas. La tecnología deja de ser solo un recurso técnico y se convierte en un motor de transformación que facilita la toma de decisiones y la adaptación a un entorno cada vez más digital.</p>
+    </div>
+
+    <h2>Transformación Digital</h2>
+    <p>La transformación digital es el proceso por el cual una organización incorpora tecnologías digitales en todas sus áreas y operaciones, con el fin de mejorar su funcionamiento, automatizar procesos, optimizar la experiencia del cliente y habilitar nuevos modelos de negocio. No se trata solo de adoptar herramientas nuevas, sino de cambiar la forma en que la organización opera y genera valor a partir de los datos.</p>
+
+    <h3>Características clave</h3>
+    <ul>
+      <li>Cambia la forma en que la empresa opera y genera valor.</li>
+      <li>No se limita a la tecnología: involucra cultura, liderazgo y talento.</li>
+      <li>Exige replantear procesos, sistemas y estrategias.</li>
+      <li>Se apoya en el uso intensivo de datos y automatización.</li>
+    </ul>
+
+    <h3>Factores que la impulsan</h3>
+    <ul>
+      <li>La competencia global y la presión constante por innovar.</li>
+      <li>La necesidad de ganar eficiencia operativa.</li>
+      <li>La mayor disponibilidad de tecnologías accesibles: nube, IA, automatización.</li>
+      <li>Clientes cada vez más exigentes y digitalizados.</li>
+    </ul>
+
+    <h3>Ámbitos donde impacta</h3>
+    <ul>
+      <li><strong>Procesos operativos:</strong> automatización y monitoreo en tiempo real.</li>
+      <li><strong>Modelo de negocio:</strong> servicios digitales, comercio electrónico, plataformas.</li>
+      <li><strong>Cultura organizacional:</strong> trabajo remoto y colaboración digital.</li>
+      <li><strong>Atención al cliente:</strong> autoservicio, chatbots y personalización.</li>
+    </ul>
+    <p>En síntesis, la transformación digital redefine la forma en que operan las organizaciones. Comprenderla permite aplicar la tecnología para optimizar procesos, generar innovación y construir ventajas competitivas en un entorno cada vez más digital.</p>
+
+    <h2>Componentes Tecnológicos</h2>
+    <p>Son los elementos que hacen posible el funcionamiento de los sistemas de información: recursos físicos, programas y servicios especializados que trabajan en conjunto para procesar datos, automatizar tareas y sostener las operaciones digitales de una empresa.</p>
+
+    <h3>Hardware</h3>
+    <p>Corresponde a los componentes físicos del sistema informático. Incluye computadoras, laptops, tablets y móviles; servidores y centros de datos; equipos de red (switches, routers, firewalls); impresoras, escáneres y otros periféricos; y equipos IoT como sensores, cámaras y terminales. Sus funciones principales son proveer capacidad de cómputo, almacenar información, permitir la conectividad y servir como punto de acceso al sistema TI.</p>
+
+    <div class="chart-placeholder">
+      <img src="h&s.png" alt="Hardware"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <span style="display:none">IMAGEN: Componentes de hardware</span>
+    </div>
+
+    <h3>Software</h3>
+    <p>Es el conjunto de programas que permite ejecutar tareas sobre el hardware. Incluye sistemas operativos (Windows, Linux, Android), software de aplicación (ERP, CRM, POS, CAD), software en la nube tipo SaaS (Microsoft 365, Google Workspace), bases de datos, apps móviles y web, y software de seguridad (antivirus, monitoreo, IDS/IPS). Sus funciones abarcan la automatización de procesos, la gestión y análisis de datos, el control de equipos y redes, y la comunicación interna y externa.</p>
+
+    <h3>Servicios tecnológicos</h3>
+    <p>Son servicios especializados que gestionan, mantienen y optimizan el uso de la infraestructura tecnológica, complementando o administrando los sistemas TI. Entre los principales tipos están la computación en la nube (IaaS, PaaS, SaaS, FaaS), el soporte técnico, la ciberseguridad gestionada, la consultoría TI, la integración de sistemas, el desarrollo de software y las telecomunicaciones (internet, VPN, telefonía IP).</p>
+    <p>Sus beneficios incluyen mayor escalabilidad, reducción de costos, más velocidad de implementación y acceso a expertos especializados.</p>
+
+    <h2>Tendencias Tecnológicas Actuales</h2>
+    <p>Las tendencias tecnológicas actuales están transformando la forma en que las organizaciones gestionan la información, desarrollan servicios y toman decisiones. La computación en la nube, la ciberseguridad y la inteligencia artificial permiten mayor eficiencia, automatización y protección de los datos, y se han convertido en pilares de la innovación y la competitividad digital.</p>
+
+    <h3>Computación en la nube</h3>
+    <p>Permite usar infraestructura, plataformas y software a través de internet, sin necesidad de mantener servidores físicos propios. Existen cuatro niveles de servicio, cada uno con distinto grado de gestión de la infraestructura:</p>
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">IaaS</span>
+        <span class="data-label">Infraestructura como servicio: servidores, redes y máquinas virtuales. Ej.: AWS EC2, Azure Virtual Machines.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">PaaS</span>
+        <span class="data-label">Plataforma como servicio: entornos listos para desarrollar, probar y desplegar apps. Ej.: Google App Engine, Azure App Services.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">SaaS</span>
+        <span class="data-label">Software como servicio: aplicaciones listas para usar desde internet. Ej.: Gmail, Microsoft 365, Salesforce.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">FaaS</span>
+        <span class="data-label">Función como servicio: ejecuta funciones puntuales sin gestionar servidores (serverless). Ej.: AWS Lambda, Azure Functions.</span>
+      </div>
+    </div>
+
+    <p>Además del tipo de servicio, existen distintos <strong>modelos de implementación</strong>:</p>
+    <ul>
+      <li><strong>Nube pública:</strong> servicios ofrecidos al público en general (AWS, Google Cloud).</li>
+      <li><strong>Nube privada:</strong> infraestructura exclusiva para una sola empresa.</li>
+      <li><strong>Nube híbrida:</strong> combina nube privada y pública; es el modelo más usado hoy.</li>
+      <li><strong>Multinube:</strong> uso simultáneo de varios proveedores de nube.</li>
+    </ul>
+
+    <div class="chart-placeholder">
+      <img src="nube.png" alt="Modelos de implementación en la nube"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <span style="display:none">IMAGEN: Modelos de implementación — nube pública, privada, híbrida y multinube</span>
+    </div>
+
+    <p>Entre sus principales beneficios están la escalabilidad (ajustar recursos según la demanda), el ahorro de costos (sin necesidad de hardware físico propio), la disponibilidad (acceso global y constante), la seguridad avanzada (firewalls y cifrado), las actualizaciones automáticas, la flexibilidad (pagar solo por lo que se usa) y la colaboración remota desde cualquier lugar.</p>
+
+    <h3>Ciberseguridad</h3>
+    <p>Es el conjunto de prácticas, tecnologías, políticas y procesos orientados a proteger sistemas, redes, aplicaciones y datos frente a ataques informáticos y accesos no autorizados. Busca garantizar la confidencialidad, integridad y disponibilidad de la información, evitando pérdidas de datos, fraudes o interrupciones del servicio. Para lograrlo se combinan herramientas técnicas (firewalls, detección de intrusiones, cifrado, antivirus, autenticación multifactor) con políticas de seguridad y capacitación de usuarios, ya que la protección depende tanto de la tecnología como del comportamiento de las personas.</p>
+
+    <p>Las principales amenazas a las que se enfrenta una organización son:</p>
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">Malware</span>
+        <span class="data-label">Software malicioso: virus, troyanos, spyware.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Phishing</span>
+        <span class="data-label">Correos y mensajes falsos diseñados para robar información.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Ransomware</span>
+        <span class="data-label">Secuestro de datos: bloquea archivos y exige un pago para liberarlos.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Ataques DDoS</span>
+        <span class="data-label">Saturación de servicios que provoca el colapso del sistema.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Ingeniería social</span>
+        <span class="data-label">Engaños y manipulación para obtener contraseñas u otra información sensible.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Robo de identidad</span>
+        <span class="data-label">Suplantación de identidad para cometer fraude con los datos de la víctima.</span>
+      </div>
+    </div>
+    <p>A esto se suman las <strong>vulnerabilidades</strong>: sistemas desactualizados que quedan expuestos a cualquiera de las amenazas anteriores.</p>
+
+    <p>Frente a estos riesgos, las medidas de protección se dividen en dos niveles:</p>
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">Nivel personal</span>
+        <span class="data-label">Contraseñas fuertes y únicas, doble factor de autenticación (2FA), evitar enlaces sospechosos, mantener los dispositivos actualizados, usar antivirus y firewall.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Nivel empresarial</span>
+        <span class="data-label">Políticas de seguridad y capacitación continua, copias de seguridad automatizadas, firewalls avanzados e IDS/IPS, segmentación de redes, cifrado de datos, auditorías de seguridad, pruebas de penetración y gestión de accesos por roles (Zero Trust).</span>
+      </div>
+    </div>
+
+    <h3>Inteligencia Artificial</h3>
+    <p>La IA permite construir sistemas capaces de analizar datos, reconocer patrones y automatizar decisiones. Se puede clasificar según su alcance y nivel de capacidad para imitar o superar la inteligencia humana:</p>
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">IA débil</span>
+        <span class="data-label">Diseñada para tareas específicas, como la traducción de idiomas.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">IA general</span>
+        <span class="data-label">Modelo teórico capaz de razonar como un ser humano en distintos contextos.</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">IA superinteligente</span>
+        <span class="data-label">Escenario hipotético en el que la IA superaría la inteligencia humana en todos los aspectos.</span>
+      </div>
+    </div>
+
+    <p>También puede clasificarse según la técnica de aprendizaje que utiliza:</p>
+    <ul>
+      <li><strong>Aprendizaje supervisado:</strong> el modelo aprende a partir de datos etiquetados.</li>
+      <li><strong>Aprendizaje no supervisado:</strong> encuentra patrones en datos sin etiquetar.</li>
+      <li><strong>Aprendizaje por refuerzo:</strong> el sistema aprende mediante recompensas y penalizaciones.</li>
+      <li><strong>IA generativa:</strong> crea contenido nuevo — texto, imágenes, audio o video.</li>
+    </ul>
+
+    <p>Entre sus beneficios destacan la automatización de tareas repetitivas (con menos errores humanos), el análisis rápido de grandes volúmenes de datos, una mejor toma de decisiones basada en predicciones, la optimización de procesos empresariales (logística, producción, finanzas), el aumento de productividad con menor costo operativo, el impulso a la innovación en sectores como medicina, educación e industria, y la personalización de experiencias mediante recomendaciones.</p>
+
+    <h2>Caso: Transformación Digital de MediLog Health Services</h2>
+    <p>MediLog es una empresa internacional dedicada a la gestión de historias clínicas y al monitoreo de pacientes. Ante el crecimiento del volumen de datos, el riesgo de ciberataques y la necesidad de automatizar procesos, decidió modernizar por completo su infraestructura tecnológica.</p>
+
+    <div class="case-block">
+      <div class="case-step">Paso 2 — Computación en la nube</div>
+      <h4>Qué hicieron</h4>
+      <ul>
+        <li>Migraron a un esquema de nube híbrida y multinube.</li>
+        <li>Usaron nube soberana para proteger datos sensibles según la normativa de cada país.</li>
+        <li>Aplicaron IaaS, PaaS, SaaS y FaaS según el servicio.</li>
+      </ul>
+      <h4>Resultados</h4>
+      <ul>
+        <li>40% menos costos.</li>
+        <li>99.95% de disponibilidad.</li>
+        <li>Acceso seguro desde cualquier país.</li>
+      </ul>
+    </div>
+
+    <div class="case-block">
+      <div class="case-step">Paso 3 — Ciberseguridad</div>
+      <h4>Acciones</h4>
+      <ul>
+        <li>Seguridad adaptativa apoyada en IA.</li>
+        <li>Diseño seguro desde el inicio del sistema (security by design).</li>
+        <li>Modelo Zero Trust, autenticación biométrica y monitoreo 24/7.</li>
+      </ul>
+      <h4>Resultados</h4>
+      <ul>
+        <li>98% de detección temprana de accesos anómalos.</li>
+        <li>Cero ataques de ransomware.</li>
+        <li>Eliminación de vulnerabilidades críticas.</li>
+      </ul>
+    </div>
+
+    <div class="case-block">
+      <div class="case-step">Paso 4 — Inteligencia Artificial</div>
+      <h4>Aplicaciones</h4>
+      <ul>
+        <li>IA agente para el monitoreo de pacientes y generación de alertas.</li>
+        <li>IA generativa para reportes y apoyo al diagnóstico.</li>
+        <li>Modelos predictivos para inventarios y recaídas de pacientes.</li>
+      </ul>
+      <h4>Resultados</h4>
+      <ul>
+        <li>Diagnósticos preliminares 55% más rápidos.</li>
+        <li>Inventarios 35% más eficientes.</li>
+        <li>Mejor tiempo de respuesta ante emergencias.</li>
+      </ul>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Conclusión del caso</div>
+      <p>La combinación de nube, ciberseguridad e inteligencia artificial permitió a MediLog operar de forma más eficiente, segura y rápida en la atención médica — una integración que se perfila como clave para cualquier organización de salud a futuro.</p>
+    </div>
+
+    <h2>Ideas Clave</h2>
+    <ul>
+      <li><strong>Las TI como base de la gestión digital:</strong> permiten capturar, procesar, almacenar y transmitir información, facilitando la automatización, la comunicación y la toma de decisiones en las organizaciones.</li>
+      <li><strong>El ecosistema TI como integración:</strong> infraestructura, software, datos, personas y procesos funcionan como un sistema interconectado que sostiene las operaciones tecnológicas.</li>
+      <li><strong>Los componentes tecnológicos:</strong> hardware, software y servicios tecnológicos son los tres elementos que permiten ejecutar aplicaciones, gestionar información y mantener en funcionamiento la infraestructura.</li>
+      <li><strong>Las tendencias que impulsan la transformación digital:</strong> la nube, la ciberseguridad y la inteligencia artificial están cambiando la forma en que las organizaciones operan, innovan y protegen su información.</li>
+    </ul>
+
+  </div>
+</div>
+
+<section id="contacto">
+  <div class="contact-inner">
+    <div class="contact-links">
+      <a href="https://github.com/VicSalN" target="_blank" class="c-link">
+        <svg viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/></svg>
+        GitHub
+      </a>
+      <a href="https://www.linkedin.com/in/victor-salazar-noel-72130b215/" target="_blank" class="c-link">
+        <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+        LinkedIn
+      </a>
+      <a href="mailto:andrez9070@gmail.com" class="c-link">
+        <svg viewBox="0 0 24 24"><path d="M24 5.457v13.909c0 .904-.732 1.636-1.636 1.636h-3.819V11.73L12 16.64l-6.545-4.91v9.273H1.636A1.636 1.636 0 0 1 0 19.366V5.457c0-2.023 2.309-3.178 3.927-1.964L5.455 4.64 12 9.548l6.545-4.91 1.528-1.145C21.69 2.28 24 3.434 24 5.457z"/></svg>
+        andrez9070@gmail.com
+      </a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-txt">© 2026 <span>Victor Salazar Noel</span> — Data Analyst</div>
+  <div class="footer-txt">Lima, Perú 🇵🇪</div>
+</footer>
+
+<div class="img-modal" id="imgModal">
+  <button class="img-modal-close" id="imgModalClose">×</button>
+  <img id="imgModalContent" src="" alt=""/>
+</div>
+
+<script>
+  const modal = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalContent');
+  const modalClose = document.getElementById('imgModalClose');
+
+  document.querySelectorAll('.chart-placeholder img').forEach(img => {
+    img.addEventListener('click', () => {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modal.classList.add('active');
+    });
+  });
+
+  function closeModal() { modal.classList.remove('active'); modalImg.src = ''; }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
