@@ -1,0 +1,526 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CRISP-DM: una Metodología para transformar Datos en decisiones — Victor Salazar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --ink: #111111;
+      --muted: #666970;
+      --line: rgba(21, 22, 22, 0.20);
+      --accent: #B5603C;
+      --accent2: #B5603C;
+      --bg: #FFFFFF;
+      --bg2: #F5F3F0;
+      --text: #111111;
+      --text-muted: #666970;
+      --border: rgba(17, 17, 17, 0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--text); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.4rem 5rem;
+      display: flex; justify-content: space-between; align-items: center;
+      background: rgba(255,255,255,0.92); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-logo { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--accent); letter-spacing: 0.15em; text-decoration: none; }
+    .nav-logo span { color: var(--text-muted); }
+    .nav-back { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--text-muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+    .nav-back:hover { color: var(--accent); }
+
+    /* ARTICLE HERO */
+    .article-hero-wrapper {
+      width: 100%;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .article-hero {
+      max-width: 1500px;
+      margin: 0 auto;
+      padding: 8rem 5rem 3.5rem;
+    }
+
+    .art-meta {
+      display: flex; align-items: center; gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .art-tag {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.25rem 0.7rem; border: 1px solid var(--border);
+    }
+
+    .art-date {
+      font-family: 'Space Mono', monospace; font-size: 0.68rem;
+      color: var(--muted); letter-spacing: 0.1em;
+    }
+
+    .art-title {
+      font-family: 'DM Serif Display', serif;
+      color: var(--ink);
+      font-size: clamp(2.4rem, 3.2vw, 3.8rem);
+      line-height: 1.08;
+      letter-spacing: -0.02em;
+      margin-bottom: 1.2rem;
+      max-width: 1350px;
+    }
+
+    .art-subtitle {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.7;
+      font-weight: 300;
+      max-width: 900px;
+    }
+
+    /* ARTICLE BODY */
+    .article-body {
+      display: grid;
+      grid-template-columns: minmax(0, 900px) 300px;
+      gap: 6rem;
+      padding: 3rem 5rem 5rem;
+      align-items: start;
+      max-width: 1500px;
+      margin: 0 auto;
+    }
+
+    .article-content { width: 100%; max-width: 900px; }
+
+    .article-content h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.7rem; letter-spacing: -0.01em;
+      margin: 3rem 0 1.2rem;
+      padding-top: 3rem;
+      border-top: 1px solid var(--border);
+      scroll-margin-top: 90px;
+    }
+
+    .article-content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+    .article-content h3 {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 1rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--accent); margin: 2rem 0 0.8rem;
+    }
+
+    .article-content p {
+      color: var(--text-muted); line-height: 1.85;
+      font-size: 0.98rem; margin-bottom: 1.4rem; font-weight: 300;
+    }
+
+    .article-content strong { color: var(--text); font-weight: 500; }
+
+    .article-content ul {
+      list-style: none; margin: 1rem 0 1.4rem; display: flex; flex-direction: column; gap: 0.6rem;
+    }
+
+    .article-content ul li {
+      color: var(--text-muted); font-size: 0.95rem; font-weight: 300;
+      padding-left: 1.2rem; position: relative; line-height: 1.7;
+    }
+
+    .article-content ul li::before {
+      content: '—'; position: absolute; left: 0;
+      color: var(--accent); font-size: 0.8rem;
+    }
+
+    /* DATA CALLOUT */
+    .callout {
+      border-left: 2px solid var(--accent);
+      padding: 1.2rem 1.5rem;
+      margin: 2rem 0;
+      background: rgba(181, 96, 60, 0.04);
+    }
+
+    .callout-label {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 0.5rem;
+    }
+
+    .callout p { color: var(--text); font-size: 0.9rem; margin: 0; font-weight: 400; }
+
+    /* DATA STAT */
+    .data-row {
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1px; background: var(--border);
+      border: 1px solid var(--border);
+      margin: 2rem 0;
+    }
+
+    .data-cell {
+      background: var(--bg2); padding: 1.2rem 1.5rem;
+      display: flex; flex-direction: column; gap: 0.3rem;
+    }
+
+    .data-value {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.6rem; color: var(--accent);
+    }
+
+    .data-label {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--text-muted); letter-spacing: 0.1em; text-transform: uppercase;
+    }
+
+    /* IMAGEN PLACEHOLDER */
+    .chart-placeholder {
+      width: 100%; aspect-ratio: 16/7;
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center; gap: 0.5rem;
+      margin: 2rem 0;
+    }
+
+    .chart-placeholder span {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--text-muted); letter-spacing: 0.12em; text-align: center;
+      padding: 0 2rem;
+    }
+
+    .chart-placeholder img { width: 100%; height: 100%; object-fit: contain; }
+
+    /* SIDEBAR */
+    .article-sidebar { position: sticky; top: 100px; }
+
+    .sidebar-section { margin-bottom: 2.5rem; }
+
+    .sidebar-title {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase;
+      margin-bottom: 1rem; padding-bottom: 0.6rem;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .sidebar-item {
+      font-size: 0.82rem; color: var(--text-muted);
+      padding: 0.5rem 0; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between;
+      font-weight: 300;
+    }
+
+    .sidebar-item span:last-child { color: var(--text); font-family: 'Space Mono', monospace; font-size: 0.72rem; }
+
+    .toc-link {
+      display: block; font-size: 0.8rem; color: var(--text-muted);
+      text-decoration: none; padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      transition: color 0.3s; font-weight: 300;
+    }
+    .toc-link:hover { color: var(--accent); }
+
+    .repo-link {
+      display: flex; align-items: center; gap: 0.5rem;
+      padding: 0.8rem 1rem; border: 1px solid var(--border);
+      color: var(--text-muted); text-decoration: none;
+      font-size: 0.78rem; font-weight: 500;
+      transition: all 0.3s; margin-top: 0.5rem;
+    }
+    .repo-link:hover { border-color: var(--accent); color: var(--accent); }
+    .repo-link svg { width: 14px; height: 14px; fill: currentColor; }
+
+    /* FOOTER */
+    .article-footer {
+      padding: 3rem 5rem;
+      border-top: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+
+    .footer-txt { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--text-muted); }
+    .footer-txt span { color: var(--accent); }
+
+    .back-btn {
+      font-family: 'Space Mono', monospace; font-size: 0.72rem;
+      color: var(--text-muted); text-decoration: none;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      display: flex; align-items: center; gap: 0.5rem;
+      transition: color 0.3s;
+    }
+    .back-btn:hover { color: var(--accent); }
+    
+    /* ZOOM DE IMÁGENES */
+    .chart-placeholder img {
+      cursor: zoom-in;
+      transition: opacity 0.2s;
+    }
+    .chart-placeholder img:hover { opacity: 0.9; }
+
+    .img-modal {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.9);
+      z-index: 999;
+      align-items: center; justify-content: center;
+      padding: 3rem;
+      cursor: zoom-out;
+    }
+    .img-modal.active { display: flex; }
+    .img-modal img {
+      max-width: 100%; max-height: 100%;
+      object-fit: contain;
+      border: 1px solid var(--border);
+    }
+    .img-modal-close {
+      position: absolute; top: 1.5rem; right: 2rem;
+      font-family: 'Space Mono', monospace;
+      color: #fff; font-size: 1.8rem;
+      cursor: pointer; line-height: 1;
+      background: none; border: none;
+    }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .article-hero { padding: 7rem 1.5rem 3rem; }
+      .art-title { font-size: clamp(2.2rem, 10vw, 3.2rem); }
+      .art-subtitle { max-width: 100%; }
+      .article-body { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 3rem; }
+      .article-sidebar { position: static; }
+      .article-footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; }
+      .img-modal { padding: 1rem; }
+      .img-modal-close { top: 1rem; right: 1rem; font-size: 1.5rem; }
+    }
+    
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="/index.html#insights" class="nav-back">← Insights</a>
+</nav>
+
+<div class="article-hero-wrapper">
+  <div class="article-hero">
+    <div class="art-meta">
+    <span class="art-tag">Ciencia de Datos</span>
+    <span class="art-date">JULIO 2026</span>
+  </div>
+  <h1 class="art-title">CRISP-DM: Una Metodología Para Transformar Datos En Decisiones</h1>
+    <p class="art-subtitle">¿Por qué la mayoría de los proyectos fallan antes de construir un modelo?</p>
+  </div>
+</div>
+
+<div class="article-body">
+  <div class="article-content">
+
+    <h2 id="introduccion">Introducción</h2>
+    <p>Al iniciar un proyecto de ciencia de datos, la atención suele centrarse en los algoritmos y modelos de <strong>Machine Learning</strong>, ya que representan uno de los componentes más visibles de esta disciplina.</p>
+    <p>Sin embargo, centrar el proyecto exclusivamente en esta etapa puede conducir a decisiones poco fundamentadas. Antes de construir un modelo, es imprescindible comprender el problema de negocio, analizar la calidad de los datos y definir con claridad el objetivo del proyecto. Aunque el modelo es la parte más visible de una solución de ciencia de datos, rara vez constituye la causa principal del éxito o del fracaso de un proyecto.</p>
+    <p>Con el objetivo de proporcionar un proceso estructurado para el desarrollo de proyectos de minería de datos, en 1996 fue presentada la metodología <strong>“CRISP-DM” (Cross-Industry Standard Process for Data Mining)</strong>. Su propósito es guiar el ciclo de vida de un proyecto, desde la comprensión del problema de negocio y los datos hasta el despliegue de una solución que genere valor para la organización.</p>
+    
+    <h2 id="crisp-dm">¿Por qué sigue siendo relevante la metodología CRISP-DM?</h2>
+    <p>Una revisión sistemática de la literatura publicada en <strong>2021</strong> por <strong>Schröer, Kruse y Marx Gómez</strong> analizó investigaciones indexadas en <strong>IEEE Xplore, ACM Digital Library y ScienceDirect</strong>. Los autores concluyen que, más de dos décadas después de su creación, <strong>CRISP-DM</strong> continúa siendo el modelo de proceso predominante en proyectos de minería y ciencia de datos, aunque identifican como una limitación frecuente la escasa atención que recibe la fase de despliegue <strong><em>(Deployment)</em></strong> en muchas implementaciones. <strong><a href="https://www.sciencedirect.com/science/article/pii/S1877050921002416" target="_blank" rel ="noopener noreferrer"> (Schröer, C., Kruse, F., & Marx Gómez, J. (2021). A Systematic Literature Review on Applying CRISP-DM Process Model. Procedia Computer Science, 181, 526–534.)</strong></a></p>
+    <p>Esto se explica por varias razones:</p>
+    <ul>
+      <li><strong>Enfoque en el negocio:</strong> Toda iniciativa comienza comprendiendo el problema que se pretende resolver antes de analizar los datos o seleccionar algoritmos.</li>
+      <li><strong>Proceso iterativo:</strong> Las fases pueden recorrerse varias veces conforme se obtiene nueva información sobre el problema o los datos.</li>
+      <li><strong>Comunicación entre negocio y tecnología:</strong>Facilita la comunicación entre analistas, científicos de datos y responsables del negocio.</li>
+      <li><strong>Adaptabilidad:</strong>La metodología puede aplicarse utilizando herramientas tradicionales de análisis, plataformas de Big Data o modelos modernos de inteligencia artificial.</li>
+    </ul>
+
+    <div class="chart-placeholder">
+      <img src="/assets/images/ciclo_iterativo.png" alt="Ciclo iterativo"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <span style="display:none">GRÁFICO: Evolución histórica TAMN 1992–2025<br>Agrega el archivo assets/evolucion_historica.png</span>
+    </div>
+
+    <div class="callout">
+      <div class="callout-label">Dato clave</div>
+      <p>La permanencia de <strong>CRISP-DM</strong> no responde únicamente a razones históricas. Su vigencia se explica porque proporciona una estructura comprensible tanto para perfiles técnicos como para responsables del negocio, permitiendo abordar proyectos de datos de forma organizada, independientemente de las herramientas o tecnologías empleadas.</p>
+    </div>
+
+    <h2 id="caso">Caso Práctico: Aplicación de CRISP-DM En Una Entidad financiera</h2>
+    <h3>"Un caso de churn aplicado paso a paso"</h3>
+    <p>Supongamos que una entidad financiera observa que un número creciente de clientes deja de utilizar uno de sus productos de crédito. Con el objetivo de reducir esa pérdida y diseñar campañas de retención más efectivas, decide desarrollar un proyecto de ciencia de datos siguiendo la metodología CRISP-DM.</p>
+
+    <div class="chart-placeholder">
+      <img src="/assets/images/ciclo_4.png" alt="Caso_Practico"
+           onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"/>
+      <span style="display:none">GRÁFICO: Caso Practico<br>Agrega el archivo</span>
+    </div>
+
+    <div class="data-row">
+    <div class="data-cell" style="grid-column: 1 / -1;">
+        <span class="data-value">1. Comprensión del negocio (Business Understanding)</span>
+    </div>
+    </div>
+
+    <h3>El primer paso consiste en definir el problema de negocio.</h3>
+    <p>La organización busca responder preguntas como:</p>
+    <ul>
+      <li><strong>¿Qué se considera un cliente que ha abandonado el producto?</strong></li>
+      <li><strong>¿Cuál es el impacto económico de esa pérdida?</strong></li>
+      <li><strong>¿Qué nivel de precisión necesita el modelo para que sea útil?</strong></li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label"></div>
+      <p>El objetivo del proyecto queda definido: identificar a los clientes con mayor probabilidad de abandonar el producto durante los próximos meses para implementar acciones preventivas.</p>
+    </div>
+
+    <div class="data-row">
+    <div class="data-cell" style="grid-column: 1 / -1;">
+        <span class="data-value">2. Comprensión de los datos (Data Understanding)</span>
+    </div>
+    </div>
+
+    <h3>Una vez definido el problema, se identifican las fuentes de información disponibles.</h3>
+    <p>Por ejemplo:</p>
+    <ul>
+      <li><strong>Historial de transacciones.</strong></li>
+      <li><strong>Antigüedad del cliente.</strong></li>
+      <li><strong>Frecuencia de uso del producto.</strong></li>
+      <li><strong>Pagos realizados.</strong></li>
+      <li><strong>Retrasos o morosidad.</strong></li>
+      <li><strong>Reclamos registrados.</strong></li>
+      <li><strong>Información demográfica.</strong></li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label"></div>
+      <p>En esta etapa también se realiza un análisis exploratorio para detectar valores faltantes, registros duplicados, datos atípicos y posibles relaciones entre las variables.</p>
+    </div>
+
+    <div class="data-row">
+    <div class="data-cell" style="grid-column: 1 / -1;">
+    <span class="data-value">3. Preparación de los datos (Data Preparation)</span>
+    </div>
+    </div>
+    <h3>Con los datos ya comprendidos, comienza el proceso de preparación.</h3>
+    <p>Algunas actividades son:</p>
+    <ul>
+      <li><strong>Eliminar registros duplicados.</strong></li>
+      <li><strong>Tratar valores nulos.</strong></li>
+      <li><strong>Corregir inconsistencias.</strong></li>
+      <li><strong>Integrar información procedente de diferentes sistemas.</strong></li>
+      <li><strong>Crear nuevas variables, como el promedio de consumo mensual o el número de días desde la última operación.</strong></li>
+    </ul>
+    <div class="callout">
+      <div class="callout-label"></div>
+      <p>El objetivo es construir un conjunto de datos limpio y adecuado para el modelado.</p>
+    </div>
+
+    <div class="data-row">
+    <div class="data-cell" style="grid-column: 1 / -1;">
+    <span class="data-value">4.	Modelado (Modeling)</span>
+    </div>
+    </div>
+    <h3>Con la información preparada, se seleccionan uno o varios algoritmos de aprendizaje automático.</h3>
+    <p>Por ejemplo:</p>
+    <ul>
+      <li><strong>Regresión logística.</strong></li>
+      <li><strong>Árboles de decisión.</strong></li>
+      <li><strong>Random Forest.</strong></li>
+      <li><strong>XGBoost.</strong></li>
+    </ul>
+    <div class="callout">
+      <div class="callout-label"></div>
+      <p>Es importante aclarar que "modelar" en CRISP-DM no siempre implica algoritmos de Machine Learning. En proyectos donde el objetivo es más operativo, el "modelo" puede ser simplemente un conjunto de reglas de negocio bien definidas. En este caso se optó por un enfoque de aprendizaje automático porque el problema (predecir abandono de clientes) se presta naturalmente a ello.</p>
+    </div>
+
+    <div class="data-row">
+    <div class="data-cell" style="grid-column: 1 / -1;">
+    <span class="data-value">5.	 Evaluación (Evaluation)</span>
+    </div>
+    </div>
+    <div class="callout">
+      <div class="callout-label"></div>
+      <p>Antes de utilizar el modelo, es necesario comprobar si realmente cumple con los objetivos planteados. No basta con obtener una alta precisión; también es importante verificar si las predicciones permiten identificar oportunamente a los clientes en riesgo y si el modelo aporta valor para la toma de decisiones.</p>
+    </div>
+
+    <div class="data-row">
+    <div class="data-cell" style="grid-column: 1 / -1;">
+    <span class="data-value">6.	Despliegue (Deployment)</span>
+    </div>
+    </div>
+    <p>Una vez validado el modelo, este se integra al proceso de negocio. Por ejemplo, cada semana el sistema puede generar un listado de clientes con mayor riesgo de abandono para que el área comercial implemente campañas personalizadas de retención, como beneficios exclusivos, mejores condiciones o contacto preventivo.</p>
+    <div class="callout">
+      <div class="callout-label"></div>
+      <p>Asimismo, el desempeño del modelo debe monitorearse de forma periódica para garantizar que sus predicciones continúen siendo confiables conforme cambian los patrones de comportamiento de los clientes.</p>
+    </div>
+
+
+    <h2 id="ventajas">VENTAJAS DE LA METODOLOGÍA CRISP-DM</h2>
+    <p>La metodología CRISP-DM continúa siendo ampliamente utilizada debido a las ventajas que ofrece durante el desarrollo de proyectos de ciencia de datos.</p>
+    <ul>
+      <li><strong>Organización del proyecto:</strong> proporciona una estructura clara que facilita la planificación y el seguimiento de cada etapa del proyecto.</li>
+      <li><strong>Comunicación entre negocio y tecnología:</strong> establece un lenguaje común entre los responsables del negocio y los equipos técnicos, favoreciendo una mejor comprensión de los objetivos.</li>
+      <li><strong>Reducción de riesgos:</strong> al definir el problema y comprender los datos antes del modelado, disminuye la probabilidad de desarrollar soluciones que no respondan a las necesidades de la organización.</li>
+      <li><strong>Mejor calidad de los resultados:</strong> promueve la validación continua de los datos, los modelos y los objetivos del proyecto, contribuyendo a obtener resultados más confiables.</li>
+      <li><strong>Adaptabilidad: </strong> puede aplicarse en distintos sectores, como el financiero, sanitario, industrial o comercial, independientemente de las herramientas tecnológicas utilizadas.</li>
+    </ul>
+    
+    <h2 id="limitaciones">LIMITACIONES DE LA METODOLOGÍA CRISP-DM</h2>
+    <p>A pesar de su amplia adopción, CRISP-DM presenta algunas limitaciones cuando se aplica a proyectos modernos de ciencia de datos.</p>
+    <p><strong>No incorpora prácticas de MLOps: </strong>la metodología fue concebida antes de la aparición de los procesos actuales de integración, despliegue y monitoreo continuo de modelos de aprendizaje automático.</p>
+    <p><strong>No contempla tecnologías recientes: </strong>fue desarrollada antes del auge del aprendizaje profundo <strong>(Deep Learning)</strong> y de la inteligencia artificial generativa, por lo que no aborda de forma explícita los desafíos asociados a estas tecnologías.</p>
+    <p><strong>Requiere complementarse con otras metodologías: </strong>en proyectos actuales suele combinarse con enfoques ágiles, como <strong>Scrum</strong>, o con prácticas de <strong>DevOps</strong> y <strong>MLOps</strong> para adaptarse a ciclos de desarrollo más dinámicos.</p>
+    
+    <h2 id="conclusiones">Conclusiones</h2>
+    <p>La ciencia de datos no consiste únicamente en desarrollar modelos predictivos. Su verdadero valor reside en comprender un problema, analizar la información disponible y transformar los datos en conocimiento que facilite la toma de decisiones. En este contexto, <strong>CRISP-DM</strong> continúa siendo una metodología vigente para estructurar proyectos de principio a fin, proporcionando un marco de trabajo que prioriza el entendimiento del negocio, la calidad de los datos y la obtención de resultados útiles para las organizaciones.</p>
+    <div class="callout">
+      <div class="callout-label"></div>
+      <p>Aunque el ecosistema tecnológico ha evolucionado con la incorporación de metodologías ágiles, MLOps y nuevas técnicas de inteligencia artificial, los principios fundamentales de CRISP-DM mantienen su relevancia. Más que una secuencia rígida de etapas, representa una forma ordenada de abordar problemas complejos y de recordar que la tecnología solo genera valor cuando responde a una necesidad real del negocio.</p>
+    </div>
+
+  </div>
+
+  <!-- SIDEBAR -->
+  <aside class="article-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Tabla de contenidos</div>
+      <a href="#introduccion" class="toc-link">Introducción</a>
+      <a href="#crisp-dm" class="toc-link">¿Por qué sigue siendo relevante la metodología CRISP-DM?</a>
+      <a href="#caso" class="toc-link">Caso Práctico: Aplicación de CRISP-DM En Una Entidad financiera</a>
+      <a href="#ventajas" class="toc-link">Ventajas de la Metodología CRISP-DM</a>
+      <a href="#limitaciones" class="toc-link">Limitaciones de la Metodología CRISP-DM</a>
+      <a href="#conclusiones" class="toc-link">Conclusiones</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Datos clave</div>
+      <div class="sidebar-item"><span>Período</span><span>1996–2025</span></div>
+      <div class="sidebar-item"><span>Fuente</span><span>ScienceDirect</span></div>
+      <div class="sidebar-item"><span>Registros</span><span>30+ años</span></div>
+    </div>
+  </aside>
+</div>
+
+<div class="article-footer">
+  <a href="/index.html#insights" class="back-btn">← Volver a Insights</a>
+  <div class="footer-txt">© 2026 <span>Victor Salazar Noel</span></div>
+</div>
+
+<div class="img-modal" id="imgModal">
+  <button class="img-modal-close" id="imgModalClose">×</button>
+  <img id="imgModalContent" src="" alt=""/>
+</div>
+
+<script>
+  const modal = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalContent');
+  const modalClose = document.getElementById('imgModalClose');
+
+  document.querySelectorAll('.chart-placeholder img').forEach(img => {
+    img.addEventListener('click', () => {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modal.classList.add('active');
+    });
+  });
+
+  function closeModal() { modal.classList.remove('active'); modalImg.src = ''; }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>

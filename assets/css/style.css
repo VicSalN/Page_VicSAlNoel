@@ -1,0 +1,781 @@
+:root {
+  --ink: #111111;
+  --muted: #666970;
+  --line: rgba(21, 22, 22, 0.2);
+  --accent: #B5603C; /* terracota — único color de la página */
+}
+html {
+  scroll-snap-type: y proximity;
+}
+
+section {
+  scroll-snap-align: start;
+}
+
+/* ============================================
+   FADE-IN — aparece suavemente al hacer scroll
+   ============================================ */
+.fade-in {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Estado base: nav transparente sobre el hero */
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.4rem 5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  transition: background 0.4s ease, padding 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Estado al hacer scroll: se agrega esta clase vía JS */
+nav.scrolled {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1rem 5rem;
+  border-bottom: 1px solid var(--line);
+  box-shadow: 0 1px 20px rgba(0, 0, 0, 0.04);
+}
+
+/* Opcional: el logo se hace un poco más chico al comprimirse el nav */
+nav.scrolled .nav-logo {
+  font-size: 0.8rem;
+}
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.5rem;
+  z-index: 101;
+}
+.nav-toggle span {
+  width: 24px; height: 2px;
+  background: var(--ink);
+  transition: all 0.3s;
+}
+
+.nav-toggle.active span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--accent); }
+.nav-toggle.active span:nth-child(2) { opacity: 0; }
+.nav-toggle.active span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--accent); }
+
+.nav-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.85rem;
+  color: var(--ink);
+  letter-spacing: 0.15em;
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-underline-offset: 5px;
+}
+
+.nav-links { display: flex; gap: 2rem; list-style: none; }
+
+.nav-links a {
+  color: var(--ink);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  transition: color 0.3s;
+  position: relative;
+}
+.nav-links a:hover { color: var(--accent); }
+.nav-links a.active { color: var(--accent); }
+
+section { position: relative; z-index: 1; }
+
+#home {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: grid;
+  grid-template-columns: 900px 1fr;
+  align-items: center;      /* centra el contenido DENTRO de la fila */
+  align-content: center;    /* centra la fila dentro de los 100dvh */
+  gap: 3rem;
+  padding: 0 5rem;
+  overflow: hidden;
+}
+
+.hero-name {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(7rem, 10vw, 10rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin-bottom: 2rem;
+}
+.hero-name .firstname {
+  color: var(--ink);
+  -webkit-text-stroke: 1px rgba(166, 168, 173, 0.2);
+  display: block;
+}
+.hero-name .lastname {
+  color: var(--ink);
+  -webkit-text-stroke: 1px rgba(166, 168, 173, 0.2);
+  font-style: italic;
+  display: block;
+  margin-left: 20rem;
+  position: relative;
+}
+
+.hero-desc {
+  font-size: 1.4rem;
+  color: #1a1a1a;
+  line-height: 1.75;
+  font-weight: 300;
+  margin-left: 30rem;
+  margin-bottom: 3rem;
+  width: max-content;
+  max-width: none;
+}
+/* resalta "AI" u otra palabra clave con el acento (envuélvela en <span class="hl">) */
+.hero-desc .hl { color: var(--accent); font-weight: 500; }
+
+.hero-right { display: flex; justify-content: center; align-items: center; }
+
+.hero-img-wrap {
+  width: 100%; max-width: 360px; aspect-ratio: 3/4;
+  position: relative; overflow: hidden;
+}
+.hero-img-wrap::before {
+  content: '';
+  position: absolute; inset: -8px;
+  border: 1px solid var(--accent);
+  opacity: 0.55;
+  z-index: 2; pointer-events: none;
+}
+.hero-img-wrap img {
+  width: 100%; height: 100%;
+  object-fit: cover; object-position: top;
+  display: block;
+  filter: grayscale(100%) contrast(1.05) saturate(0);
+}
+.hero-img-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, #b1b0b0 0%, #949393 50%, #a3a3a3 100%);
+  display: flex; align-items: center; justify-content: center;
+}
+.hero-img-placeholder span {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.62rem;
+  color: var(--muted);
+  letter-spacing: 0.12em;
+  text-align: center;
+  padding: 0 1.5rem;
+  line-height: 1.8;
+}
+
+/* ============================================
+   TÍTULO DE SECCIÓN — global, una sola definición
+   ============================================ */
+.section-eyebrow {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.section-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(2.8rem, 5vw, 4.2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin-bottom: 0;
+  color: inherit; /* toma el color del padre: var(--ink) en secciones claras, #EDE9E3 en oscuras */
+}
+
+/* ============================================
+   ABOUT — oscuro
+   ============================================ */
+#about {
+  padding: 7rem 5rem;
+  background: #14141A;
+  color: #EDE9E3;
+  border-top: 1px solid rgba(237, 233, 227, 0.1);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3.5rem;
+
+  --text: #EDE9E3;
+  --text-muted: #9B98A0;
+  --accent: #5C87A0;
+  --accent2: #7CA3B8;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  max-width: 700px;
+  margin: 0;
+  width: 100%;
+}
+
+.about-text p {
+  color: #B8B5BC;
+  line-height: 1.85;
+  font-size: 0.98rem;
+  margin-bottom: 0;
+  font-weight: 300;
+}
+
+.about-text strong {
+  color: #EDE9E3;
+  font-weight: 500;
+}
+
+.skills-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  width: 100%;
+}
+
+.skill-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.skill-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+
+.skill-name {
+  font-size: 0.8rem;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text);
+}
+
+.skill-lvl {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--text-muted);
+}
+
+.skill-track {
+  height: 2px;
+  background: rgba(237, 233, 227, 0.1);
+  position: relative;
+}
+
+.skill-fill {
+  position: absolute;
+  top: 0; left: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--accent2));
+  transition: width 1.4s cubic-bezier(0.16,1,0.3,1);
+}
+
+/* ============================================
+   LAB — claro
+   ============================================ */
+
+.work-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(17, 17, 17, 0.45);
+  max-width: 1400px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.work-row {
+  display: grid;
+  grid-template-columns: 60px 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid rgba(17, 17, 17, 0.45);
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s;
+}
+
+.work-row:hover { padding-left: 1rem; }
+.work-row:hover .work-num { color: var(--accent2, var(--accent)); }
+
+.work-num {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.1em;
+  transition: color 0.3s;
+}
+
+.work-info { display: flex; flex-direction: column; gap: 0.4rem; }
+
+.work-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.4rem;
+  letter-spacing: -0.01em;
+  color: var(--ink);
+}
+
+.work-meta { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+.work-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.65rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.6rem;
+  border: 1px solid var(--border);
+}
+
+.work-arrow {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  transition: all 0.3s;
+}
+
+.work-row:hover .work-arrow {
+  color: var(--accent);
+  transform: translateX(4px);
+}
+
+.work-soon {
+  opacity: 0.35;
+  pointer-events: none;
+}
+
+/* ============================================
+   LAB — 
+   ============================================ */
+#lab {
+  padding: 7rem 5rem;
+  background: #FFFFFF;
+  color: var(--ink);
+  border-top: 1px solid var(--line);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3.5rem;
+  --text: var(--ink);
+  --text-muted: #8A8A8F;
+  --accent: #B5603C;
+  --accent2: #B5603C;
+}
+
+.lab-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  max-width: 700px;
+}
+
+.lab-content p {
+  color: #4A4A4A;
+  line-height: 1.85;
+  font-size: 1.05rem;
+  font-weight: 300;
+}
+
+.lab-tags {
+  display: flex;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+}
+
+.lab-tag {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.7rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem 0.8rem;
+  border: 1px solid var(--border);
+}
+
+
+/* ============================================
+   INSIGHTS — oscuro
+   ============================================ */
+#insights {
+  padding: 7rem 5rem;
+  background: #14141A;
+  color: #EDE9E3;
+  border-top: 1px solid rgba(237, 233, 227, 0.1);
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 3.5rem;
+
+  --text: #EDE9E3;
+  --text-muted: #9B98A0;
+  --accent: #5C87A0;
+}
+
+.insights-list {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid rgba(237, 233, 227, 0.15);
+  max-width: 1000px;
+}
+
+.insight-row {
+  display: grid;
+  grid-template-columns: 70px 1fr auto;
+  gap: 2rem;
+  align-items: center;
+  padding: 1.8rem 0;
+  border-bottom: 1px solid rgba(237, 233, 227, 0.15);
+  text-decoration: none;
+  color: var(--text);
+  transition: all 0.3s;
+}
+
+.insight-row:hover { padding-left: 1rem; }
+.insight-row:hover .insight-arrow { color: var(--accent); transform: translateX(4px); }
+
+.insight-date {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.08em;
+}
+
+.insight-title {
+  font-family: 'DM Serif Display', serif;
+  font-size: 1.2rem;
+}
+
+.insight-arrow {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  transition: all 0.3s;
+}
+
+
+/* ============================================
+   CONTACT — claro
+   ============================================ */
+#contact {
+  padding: 7rem 5rem;
+  background: #FFFFFF;
+  color: var(--ink);
+  border-top: 1px solid var(--line);   /* ← antes var(--line), oscuro invisible */
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  /* variables locales, igual que en about/lab/insights */
+  --text: var(--ink);
+  --text-muted: #8A8A8F;
+  --accent: #B5603C;
+  --accent2: #B5603C;
+}
+
+.contact-content {
+  text-align: center;
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.contact-text {
+  color: #111111;
+  font-size: 1.05rem;
+  line-height: 1.7;
+  font-weight: 300;
+}
+
+.contact-email {
+  font-family: 'DM Serif Display', serif;
+  font-size: clamp(1.8rem, 4vw, 2.6rem);
+  color: var(--text);
+  text-decoration: none;
+  border-bottom: 1px solid var(--accent);
+  padding-bottom: 0.2rem;
+  margin: 0.5rem 0;
+}
+
+.contact-links {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+}
+
+.contact-links a {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent2);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.contact-links a:hover { color: var(--accent); }
+
+/* ============================================
+   FOOTER
+   ============================================ */
+footer {
+  padding: 2rem 5rem;
+  background: #FFFFFF;
+  border-top: 1px solid var(--line);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.footer-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.1em;
+  color: var(--ink);
+}
+
+.footer-copy {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.footer-links {
+  display: flex;
+  gap: 1.2rem;
+}
+
+.footer-links a {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.footer-links a:hover { color: var(--accent); }
+
+/* ============================================
+   RESPONSIVE — TABLET (1024px o menos)
+   ============================================ */
+@media (max-width: 1024px) {
+
+  nav {
+    padding: 1.2rem 3rem;
+  }
+
+  #home {
+    grid-template-columns: 1fr;
+    padding: 8rem 3rem 3rem;
+    align-content: center;
+    min-height: 100vh;
+    min-height: 100dvh;
+    text-align: center;
+    gap: 2rem;
+  }
+
+  .hero-right {
+    order: -1;
+  }
+
+  .hero-img-wrap {
+    max-width: 280px;
+    margin: 0 auto;
+  }
+
+  .hero-name {
+    font-size: clamp(4rem, 8vw, 6rem);
+    text-align: center;
+  }
+
+  .hero-name .lastname {
+    margin-left: 0;
+  }
+
+  .hero-desc {
+    margin-left: 0;
+    width: auto;
+    max-width: 500px;
+    margin: 0 auto 2rem;
+    font-size: 1.15rem;
+  }
+
+  .about-content {
+    max-width: 100%;
+  }
+
+  .work-list, .insights-list {
+    max-width: 100%;
+  }
+}
+
+
+/* ============================================
+   RESPONSIVE — MOBILE (768px o menos)
+   ============================================ */
+@media (max-width: 768px) {
+
+  nav {
+    padding: 1.2rem 1.5rem;
+  }
+
+nav {
+    padding: 1.2rem 1.5rem;
+  }
+
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: fixed;
+    top: 0; right: 0;
+    height: 100vh;
+    height: 100dvh;
+    width: min(75vw, 320px);
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(10px);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    transform: translateX(100%);
+    transition: transform 0.4s ease;
+    z-index: 100;
+  }
+
+  .nav-links.active {
+    transform: translateX(0);
+  }
+
+
+  #home {
+    padding: 7rem 1.5rem 2.5rem;
+    gap: 1.5rem;
+  }
+
+  .hero-name {
+    font-size: clamp(3rem, 12vw, 4.5rem);
+    margin-bottom: 1.2rem;
+  }
+
+  .hero-desc {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .hero-img-wrap {
+    max-width: 220px;
+  }
+
+  /* --- Secciones que faltaban en mobile --- */
+  #about, #lab, #insights, #contact {
+    padding: 6rem 1.5rem 2.5rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    gap: 2rem;
+  }
+
+  #work {
+    padding: 7rem 1.5rem 2.5rem;
+    gap: 2rem;
+  }
+
+  .section-title {
+    font-size: clamp(2rem, 8vw, 2.6rem);
+  }
+
+  .about-content, .lab-content {
+    gap: 1.5rem;
+  }
+
+  .work-row {
+    grid-template-columns: 40px 1fr auto;
+    gap: 1rem;
+    padding: 1.5rem 0;
+  }
+
+  .work-title {
+    font-size: 1.1rem;
+  }
+
+  .work-meta {
+    gap: 0.4rem;
+  }
+
+  .work-tag {
+    font-size: 0.6rem;
+    padding: 0.15rem 0.5rem;
+  }
+
+  .work-arrow {
+    font-size: 1rem;
+  }
+
+  .insight-row {
+    padding: 1.2rem 0;
+    gap: 1rem;
+  }
+
+  .insight-title {
+    font-size: 1rem;
+  }
+
+  .insight-row {
+    grid-template-columns: 50px 1fr auto;
+  }
+
+  footer {
+    padding: 1.5rem;
+    flex-direction: column;
+    gap: 1rem;
+    text-align: center;
+  }
+}
+
+
+/* ============================================
+   RESPONSIVE — MOBILE PEQUEÑO (480px o menos)
+   ============================================ */
+@media (max-width: 480px) {
+
+  .hero-name {
+    font-size: clamp(2.4rem, 14vw, 3.2rem);
+  }
+
+  .hero-desc {
+    font-size: 0.9rem;
+  }
+
+  .hero-img-wrap {
+    max-width: 180px;
+  }
+
+  nav {
+    padding: 1rem 1.2rem;
+  }
+
+  .section-title {
+    font-size: clamp(1.8rem, 9vw, 2.2rem);
+  }
+}
