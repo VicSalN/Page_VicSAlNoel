@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arquitectura Básica de Computadores y Sistemas Operativos — Victor Salazar</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <style>
+:root {
+  --ink: #111111;
+  --muted: #666970;
+  --line: rgba(21, 22, 22, 0.2);
+  --accent: #B5603C;
+  --bg2: #F5F3F0;
+  --border: rgba(17, 17, 17, 0.12);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #FFFFFF; color: var(--ink); font-family: 'DM Sans', sans-serif; overflow-x: hidden; }
+
+nav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  padding: 1.4rem 5rem;
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--line);
+}
+.nav-logo { font-family: 'Space Mono', monospace; font-size: 0.85rem; color: var(--ink); letter-spacing: 0.15em; text-decoration: none; }
+.nav-logo span { color: var(--muted); }
+.nav-back { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.12em; text-transform: uppercase; transition: color 0.3s; display: flex; align-items: center; gap: 0.5rem; }
+.nav-back:hover { color: var(--accent); }
+
+    .article-hero-wrapper { width: 100%; border-bottom: 1px solid var(--line); }
+    .article-hero { padding: 8rem 5rem 3.5rem; max-width: 1500px; margin: 0 auto; }
+
+    .art-meta { display: flex; align-items: center; gap: 1.5rem; margin-bottom: 2rem; }
+    .art-tag {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem;
+      color: var(--accent); letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.25rem 0.7rem; border: 1px solid var(--border);
+    }
+    .art-date { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--muted); letter-spacing: 0.1em; }
+    .article-hero { border-bottom: 1px solid var(--line); }
+
+    .art-title {
+      font-family: 'DM Serif Display', serif; color: var(--ink);
+      font-size: clamp(2.5rem, 3.2vw, 3.8rem); line-height: 1.08; max-width: 1350px;
+    }
+    .art-subtitle { font-size: 1.08rem; color: var(--muted); line-height: 1.7; font-weight: 400; max-width: 1350px; }
+
+    .article-body {
+      display: grid; grid-template-columns: minmax(0, 900px) 300px; gap: 6rem;
+      padding: 3rem 5rem 5rem; align-items: start; max-width: 1500px; margin: 0 auto;
+    }
+    .article-content { width: 100%; max-width: 900px; }
+
+    .article-content h2 {
+      font-family: 'DM Serif Display', serif; font-size: 1.7rem; letter-spacing: -0.01em;
+      margin: 3rem 0 1.2rem; padding-top: 3rem; border-top: 1px solid var(--border);
+      scroll-margin-top: 100px;
+    }
+    .article-content h2:first-child { margin-top: 0; padding-top: 0; border-top: none; }
+
+    .article-content h3 {
+      font-family: 'DM Sans', sans-serif; font-size: 1rem; font-weight: 600;
+      letter-spacing: 0.06em; text-transform: uppercase; color: var(--accent); margin: 2rem 0 0.8rem;
+    }
+
+    .article-content p {
+      color: var(--muted); line-height: 1.85; font-size: 0.98rem; margin-bottom: 1.4rem; font-weight: 300;
+      text-align: justify; text-justify: inter-word; hyphens: auto;
+    }
+    .article-content strong { color: var(--ink); font-weight: 500; }
+
+    .article-content ul { list-style: none; margin: 1rem 0 1.4rem; display: flex; flex-direction: column; gap: 0.6rem; }
+    .article-content ul li { color: var(--muted); font-size: 0.95rem; font-weight: 300; padding-left: 1.2rem; position: relative; line-height: 1.7; }
+    .article-content ul li::before { content: '—'; position: absolute; left: 0; color: var(--accent); font-size: 0.8rem; }
+
+    .callout { border-left: 2px solid var(--accent); padding: 1.2rem 1.5rem; margin: 2rem 0; background: rgba(181, 96, 60, 0.04); }
+    .callout-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 0.5rem; }
+    .callout p { color: var(--ink); font-size: 0.9rem; margin: 0; font-weight: 400; }
+
+    .data-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1px; background: var(--border); border: 1px solid var(--border); margin: 2rem 0; }
+    .data-cell { background: var(--bg2); padding: 1.2rem 1.5rem; display: flex; flex-direction: column; gap: 0.3rem; }
+    .data-value { font-family: 'DM Serif Display', serif; font-size: 1.8rem; color: var(--accent); }
+    .data-label { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.1em; text-transform: uppercase; }
+
+    /* TABLA DE CONCEPTOS */
+    .concept-table { width: 100%; border-collapse: collapse; margin: 1.5rem 0 2rem; border: 1px solid var(--border); }
+    .concept-table th, .concept-table td { padding: 0.9rem 1.1rem; text-align: left; border-bottom: 1px solid var(--border); font-size: 0.88rem; }
+    .concept-table th {
+      font-family: 'Space Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); background: var(--bg2); font-weight: 600;
+    }
+    .concept-table td { color: var(--muted); font-weight: 300; line-height: 1.5; }
+    .concept-table td strong { color: var(--ink); font-weight: 500; }
+    .concept-table tr:last-child td { border-bottom: none; }
+
+    .chart-placeholder {
+      width: 100%; aspect-ratio: 16/7; background: var(--bg2); border: 1px solid var(--border);
+      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 0.5rem; margin: 2rem 0;
+    }
+    .chart-placeholder span { font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--muted); letter-spacing: 0.12em; text-align: center; padding: 0 2rem; }
+    .chart-placeholder img { width: 100%; height: 100%; object-fit: contain; cursor: zoom-in; transition: opacity 0.2s; }
+    .chart-placeholder img:hover { opacity: 0.9; }
+
+    .article-sidebar { position: sticky; top: 100px; }
+    .sidebar-section { margin-bottom: 2.5rem; }
+    .sidebar-title {
+      font-family: 'Space Mono', monospace; font-size: 0.65rem; color: var(--accent); letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 1rem; padding-bottom: 0.6rem; border-bottom: 1px solid var(--border);
+    }
+    .sidebar-item { font-size: 0.82rem; color: var(--muted); padding: 0.5rem 0; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; font-weight: 300; }
+    .sidebar-item span:last-child { color: var(--ink); font-family: 'Space Mono', monospace; font-size: 0.72rem; }
+    .toc-link { display: block; font-size: 0.8rem; color: var(--muted); text-decoration: none; padding: 0.5rem 0; border-bottom: 1px solid var(--border); transition: color 0.3s; font-weight: 300; }
+    .toc-link:hover { color: var(--accent); }
+
+    .article-footer { padding: 3rem 5rem; border-top: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .footer-txt { font-family: 'Space Mono', monospace; font-size: 0.68rem; color: var(--muted); }
+    .footer-txt span { color: var(--accent); }
+    .back-btn { font-family: 'Space Mono', monospace; font-size: 0.72rem; color: var(--muted); text-decoration: none; letter-spacing: 0.1em; text-transform: uppercase; display: flex; align-items: center; gap: 0.5rem; transition: color 0.3s; }
+    .back-btn:hover { color: var(--accent); }
+
+    .img-modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 999; align-items: center; justify-content: center; padding: 3rem; cursor: zoom-out; }
+    .img-modal.active { display: flex; }
+    .img-modal img { max-width: 100%; max-height: 100%; object-fit: contain; border: 1px solid var(--border); }
+    .img-modal-close { position: absolute; top: 1.5rem; right: 2rem; font-family: 'Space Mono', monospace; color: #fff; font-size: 1.8rem; cursor: pointer; line-height: 1; background: none; border: none; }
+
+    @media (max-width: 900px) {
+      nav { padding: 1rem 1.5rem; }
+      .article-hero { padding: 8rem 1.5rem 3rem; }
+      .article-body { grid-template-columns: 1fr; padding: 3rem 1.5rem; gap: 3rem; }
+      .article-sidebar { position: static; }
+      .article-footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; }
+      .concept-table { display: block; overflow-x: auto; }
+      .img-modal { padding: 1rem; }
+      .img-modal-close { top: 1rem; right: 1rem; font-size: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html#insights" class="nav-back">← Artículos</a>
+  <a href="../index.html#home" class="nav-back">← Inicio</a>
+</nav>
+
+<div class="article-hero-wrapper">
+<div class="article-hero">
+  <div class="art-meta">
+    <span class="art-tag">Fundamentos TI · Bitácora</span>
+    <span class="art-date">2026</span>
+  </div>
+  <h1 class="art-title">Arquitectura básica de computadores y sistemas operativos: lo que sostiene todo lo demás</h1>
+  <p class="art-subtitle">Un repaso aplicado a CPU, RAM, almacenamiento y placa madre; periféricos de entrada y salida; el rol del sistema operativo como intermediario entre hardware y software; y los fundamentos de la virtualización mediante hipervisores.</p>
+</div>
+</div>
+
+<div class="article-body">
+  <div class="article-content">
+
+    <h2 id="contexto">Contexto</h2>
+    <p>Cualquier trabajo en tecnología, desde administrar una base de datos hasta desplegar un servicio en la nube, descansa sobre un mismo conjunto de fundamentos: cómo procesa información un computador, cómo se comunica con el usuario y cómo un sistema operativo reparte los recursos disponibles entre todo lo que se ejecuta.</p>
+    <p>Este artículo resume, de forma aplicada, los conceptos centrales de la <strong>arquitectura de computadores</strong>: sus componentes internos, los dispositivos periféricos que habilitan la interacción, el papel del <strong>sistema operativo</strong> como gestor de recursos, y los principios de <strong>virtualización</strong> que hoy sostienen buena parte de la infraestructura en la nube.</p>
+
+    <h2 id="arquitectura">Arquitectura del computador</h2>
+    <p>La arquitectura describe cómo interactúan los componentes internos (procesador, memoria y almacenamiento) para ejecutar aplicaciones, procesar datos y administrar recursos del sistema. Cuatro piezas concentran casi toda la lógica:</p>
+
+    <table class="concept-table">
+      <tr><th>Componente</th><th>Rol</th></tr>
+      <tr><td><strong>CPU</strong></td><td>Interpreta instrucciones, procesa datos y coordina el sistema. Internamente se apoya en la Unidad de Control (CU), la Unidad Aritmético-Lógica (ALU) y los registros.</td></tr>
+      <tr><td><strong>RAM</strong></td><td>Memoria temporal de alta velocidad donde se cargan programas y datos en ejecución. Se borra al apagar el equipo.</td></tr>
+      <tr><td><strong>Almacenamiento</strong></td><td>Guarda información de forma permanente: discos duros (HDD), unidades de estado sólido (SSD) o almacenamiento externo.</td></tr>
+      <tr><td><strong>Placa madre</strong></td><td>Circuito principal que conecta todo: socket del CPU, ranuras de RAM, chipset, puertos de expansión e interfaces de almacenamiento.</td></tr>
+    </table>
+
+    <div class="callout">
+      <div class="callout-label">En la práctica</div>
+      <p>Al abrir un navegador, el almacenamiento entrega el programa instalado, la RAM lo carga para ejecución rápida, la CPU procesa sus instrucciones y la placa madre coordina la comunicación entre los tres. El mismo patrón se repite al guardar un archivo o al encender el equipo: solo cambia qué componente lidera cada paso.</p>
+    </div>
+
+    <h2 id="perifericos">Dispositivos periféricos</h2>
+    <p>Los periféricos son el punto de contacto entre el usuario y el sistema. Se agrupan en tres categorías según la dirección del flujo de información:</p>
+
+    <div class="data-row">
+      <div class="data-cell">
+        <span class="data-value">Entrada</span>
+        <span class="data-label">Teclado · mouse · micrófono · cámara · escáner</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Salida</span>
+        <span class="data-label">Monitor · impresora · altavoces · proyector</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">Almacenamiento externo</span>
+        <span class="data-label">USB · discos externos · tarjetas SD · NAS</span>
+      </div>
+      <div class="data-cell">
+        <span class="data-value">USB / BT / Wi-Fi</span>
+        <span class="data-label">Interfaces de conexión más comunes</span>
+      </div>
+    </div>
+
+    <p>Un caso simple lo deja claro: un estudiante que prepara una exposición usa teclado y mouse para escribir (entrada), revisa su avance en el monitor e imprime una copia (salida), y guarda el archivo tanto en el disco duro como en una memoria USB para llevarlo a otra computadora (almacenamiento). Los tres tipos de periféricos rara vez actúan solos.</p>
+
+    <h2 id="so">Sistemas operativos</h2>
+    <p>El sistema operativo (SO) es el software que administra los recursos del computador y actúa como intermediario entre el usuario, el hardware y las aplicaciones. Sin él, cada programa tendría que negociar directamente con el procesador y la memoria.</p>
+
+    <table class="concept-table">
+      <tr><th>Función</th><th>Qué hace</th><th>Ejemplo</th></tr>
+      <tr><td><strong>Gestión de hardware</strong></td><td>Controla el uso de CPU, RAM y dispositivos</td><td>Controlar impresoras o memoria</td></tr>
+      <tr><td><strong>Administración de memoria</strong></td><td>Distribuye la RAM entre programas</td><td>Abrir varias aplicaciones a la vez</td></tr>
+      <tr><td><strong>Control de procesos</strong></td><td>Gestiona las tareas del procesador</td><td>Escuchar música mientras se trabaja</td></tr>
+      <tr><td><strong>Gestión de archivos</strong></td><td>Organiza y permite acceder a documentos</td><td>Carpetas y archivos</td></tr>
+      <tr><td><strong>Interfaz con el usuario</strong></td><td>Permite interactuar con el equipo</td><td>Escritorio, ventanas, íconos</td></tr>
+      <tr><td><strong>Seguridad del sistema</strong></td><td>Protege el acceso y los datos</td><td>Usuarios y contraseñas</td></tr>
+    </table>
+
+    <h3>Principales sistemas operativos</h3>
+    <ul>
+      <li><strong>Windows:</strong> desarrollado por Microsoft, dominante en equipos personales y empresariales, con amplia compatibilidad de software.</li>
+      <li><strong>Linux:</strong> código abierto, modificable y distribuible libremente; base de la mayoría de servidores y entornos de desarrollo.</li>
+      <li><strong>macOS:</strong> de Apple, con fuerte integración dentro de su propio ecosistema de hardware.</li>
+      <li><strong>Android:</strong> móvil, basado en Linux, desarrollado por Google.</li>
+      <li><strong>iOS:</strong> móvil, de Apple, optimizado específicamente para su propio hardware.</li>
+    </ul>
+
+    <div class="callout">
+      <div class="callout-label">Caso aplicado</div>
+      <p>Un servidor educativo que aloja horarios y materiales de clase suele correr sobre <strong>Linux</strong> por su estabilidad y seguridad: el SO administra los recursos del servidor, ejecuta el proceso del servidor web, almacena los archivos del sitio y controla accesos mediante usuarios y permisos, todo para que los estudiantes puedan entrar desde cualquier lugar.</p>
+    </div>
+
+    <h2 id="virtualizacion">Virtualización básica</h2>
+    <p>La virtualización permite ejecutar varios sistemas operativos en un mismo equipo físico, mejorando el aprovechamiento de CPU, memoria y almacenamiento, y reduciendo la necesidad de hardware dedicado. Es la base técnica de buena parte de los centros de datos y servicios en la nube actuales.</p>
+    <p>Quien hace posible esto es el <strong>hipervisor</strong>: el software que crea y administra máquinas virtuales dentro de un computador físico, dividiendo los recursos de hardware —CPU, memoria, almacenamiento y red— para que varios sistemas operativos se ejecuten al mismo tiempo sobre la misma máquina.</p>
+    <table class="concept-table">
+      <tr><th>Concepto</th><th>Descripción</th><th>Ejemplo</th></tr>
+      <tr><td><strong>Máquina virtual</strong></td><td>Computador simulado dentro de otro computador</td><td>Ejecutar Linux dentro de Windows</td></tr>
+      <tr><td><strong>Hipervisor</strong></td><td>Software que gestiona las máquinas virtuales</td><td>VirtualBox, VMware</td></tr>
+      <tr><td><strong>Virtualización</strong></td><td>Uso eficiente de recursos físicos para crear entornos virtuales</td><td>Servidores en la nube</td></tr>
+    </table>
+
+    <h3>Tipos de hipervisor</h3>
+    <ul>
+      <li><strong>Tipo 1 (Bare Metal):</strong> se ejecuta directamente sobre el hardware, sin sistema operativo previo. Más eficiente; típico en centros de datos y nube (Hyper-V, VMware ESXi, KVM).</li>
+      <li><strong>Tipo 2 (Hosted):</strong> se ejecuta como programa dentro de un SO existente. Común en equipos personales y laboratorios (VirtualBox, VMware Workstation).</li>
+    </ul>
+
+    <p>Los beneficios se concentran en cinco frentes: <strong>optimización de recursos</strong> (varias VM en un solo equipo), <strong>aislamiento</strong> (un fallo en una máquina virtual no afecta a las demás), <strong>reducción de costos</strong> (menos hardware físico), <strong>escalabilidad</strong> (ajustar recursos según demanda) y <strong>seguridad</strong> (entornos de prueba aislados del sistema principal).</p>
+
+    <div class="callout">
+      <div class="callout-label">Caso aplicado</div>
+      <p>Una universidad con un solo servidor Linux puede usar <strong>KVM</strong> para levantar varias máquinas virtuales independientes: una como servidor web institucional, otra como base de datos y una tercera como entorno de pruebas para estudiantes de informática. Un solo equipo físico, tres servicios aislados entre sí.</p>
+    </div>
+
+    <h2 id="conclusiones">Conclusiones</h2>
+    <p>Estos cuatro bloques —arquitectura, periféricos, sistema operativo y virtualización— no son temas aislados: son capas que se apoyan una sobre otra. El hardware procesa, los periféricos permiten interactuar con ese procesamiento, el sistema operativo reparte y protege los recursos, y la virtualización multiplica lo que un mismo equipo físico puede ofrecer.</p>
+    <p>Entender esta cadena completa es lo que permite diagnosticar problemas de rendimiento con criterio, elegir el sistema operativo correcto para cada entorno y aprovechar la virtualización como herramienta real de eficiencia, no solo como concepto teórico.</p>
+
+  </div>
+
+  <aside class="article-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Tabla de contenidos</div>
+      <a href="#contexto" class="toc-link">Contexto</a>
+      <a href="#arquitectura" class="toc-link">Arquitectura del computador</a>
+      <a href="#perifericos" class="toc-link">Dispositivos periféricos</a>
+      <a href="#so" class="toc-link">Sistemas operativos</a>
+      <a href="#virtualizacion" class="toc-link">Virtualización básica</a>
+      <a href="#conclusiones" class="toc-link">Conclusiones</a>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">Datos clave</div>
+      <div class="sidebar-item"><span>Curso</span><span>Tecnologías de la Información</span></div>
+      <div class="sidebar-item"><span>Unidad</span><span>1 · Tema 2</span></div>
+      <div class="sidebar-item"><span>Componentes</span><span>4</span></div>
+      <div class="sidebar-item"><span>Tipos de hipervisor</span><span>2</span></div>
+    </div>
+  </aside>
+</div>
+
+<div class="article-footer">
+  <a href="../index.html#insights" class="back-btn">← Volver a artículos</a>
+  <div class="footer-txt">© 2026 <span>Victor Salazar Noel</span></div>
+</div>
+
+<div class="img-modal" id="imgModal">
+  <button class="img-modal-close" id="imgModalClose">×</button>
+  <img id="imgModalContent" src="" alt=""/>
+</div>
+
+<script>
+  const modal = document.getElementById('imgModal');
+  const modalImg = document.getElementById('imgModalContent');
+  const modalClose = document.getElementById('imgModalClose');
+
+  document.querySelectorAll('.chart-placeholder img').forEach(img => {
+    img.addEventListener('click', () => {
+      modalImg.src = img.src;
+      modalImg.alt = img.alt;
+      modal.classList.add('active');
+    });
+  });
+
+  function closeModal() { modal.classList.remove('active'); modalImg.src = ''; }
+  modalClose.addEventListener('click', closeModal);
+  modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
