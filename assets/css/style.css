@@ -631,7 +631,7 @@ footer {
 
 
 /* ============================================
-   RESPONSIVE — MOBILE (768px o menos)
+  RESPONSIVE — MOBILE (768px o menos)
    ============================================ */
 @media (max-width: 768px) {
 
@@ -641,6 +641,11 @@ footer {
 
 nav {
     padding: 1.2rem 1.5rem;
+  }
+nav.scrolled {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: rgba(255, 255, 255, 0.97);
   }
 
   .nav-toggle {
