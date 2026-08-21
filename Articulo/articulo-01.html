@@ -280,49 +280,6 @@ nav {
       background: none; border: none;
     }
 
-  .toc-toggle {
-    display: none;
-    position: fixed;
-    bottom: 1.5rem; right: 1.5rem;
-    z-index: 150;
-    width: 48px; height: 48px;
-    background: var(--ink);
-    border: none; border-radius: 50%;
-    flex-direction: column; align-items: center; justify-content: center;
-    gap: 4px; cursor: pointer;
-  }
-  .toc-toggle span { width: 20px; height: 2px; background: #fff; }
-
-  .toc-panel {
-    position: fixed; top: 0; right: -300px;
-    width: 280px; height: 100vh;
-    background: #fff;
-    border-left: 1px solid var(--line);
-    z-index: 200;
-    padding: 5rem 1.5rem 2rem;
-    transition: right 0.3s ease;
-    overflow-y: auto; 
-  }
-  .toc-panel.open { right: 0; }
-
-  .toc-panel-header {
-    display: flex; justify-content: space-between; align-items: center;
-    margin-bottom: 1rem; padding-bottom: 0.6rem;
-    border-bottom: 1px solid var(--border);
-  }
-  .toc-panel-close {
-    background: none; border: none; font-size: 1.4rem;
-    color: var(--muted); cursor: pointer; line-height: 1;
-  }
-
-    .toc-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.4);
-    z-index: 190;
-    }
-    .toc-overlay.open { display: block; }
-
     @media (max-width: 900px) {
       nav { padding: 1rem 1.5rem; }
       .article-hero { padding: 8rem 1.5rem 3rem; }
@@ -331,8 +288,6 @@ nav {
       .article-footer { padding: 2rem 1.5rem; flex-direction: column; gap: 1rem; }
       .img-modal { padding: 1rem; }
       .img-modal-close { top: 1rem; right: 1rem; font-size: 1.5rem; }
-      .toc-toggle { display: flex; }
-      .article-sidebar .sidebar-section:first-child { display: none; }
     }
     
   </style>
@@ -342,9 +297,6 @@ nav {
 <nav>
   <a href="../index.html#insights" class="nav-back">← Artículos</a>
   <a href="../index.html#home" class="nav-back">← Inicio</a>
-  <button class="toc-toggle" id="tocToggle" aria-label="Tabla de contenidos" aria-expanded="false">
-  <span></span><span></span><span></span>
-</button>
 </nav>
 
 <div class="article-hero-wrapper">
@@ -479,20 +431,6 @@ nav {
   <div class="footer-txt">© 2026 <span>Victor Salazar</span></div>
 </div>
 
-<div class="toc-panel" id="tocPanel">
-  <div class="toc-panel-header">
-    <span class="sidebar-title" style="margin:0;border:none;padding:0;">Contenido</span>
-    <button class="toc-panel-close" id="tocPanelClose">×</button>
-  </div>
-  <a href="#contexto" class="toc-link">Contexto</a>
-  <a href="#evolucion-tamn" class="toc-link">Evolución de la TAMN</a>
-  <a href="#spread" class="toc-link">Spread Activo – Pasivo</a>
-  <a href="#metodologia" class="toc-link">Metodología</a>
-  <a href="#conclusiones" class="toc-link">Conclusiones</a>
-</div>
-<div class="toc-overlay" id="tocOverlay"></div>
-
-
 <div class="img-modal" id="imgModal">
   <button class="img-modal-close" id="imgModalClose">×</button>
   <img id="imgModalContent" src="" alt=""/>
@@ -515,29 +453,6 @@ nav {
   modalClose.addEventListener('click', closeModal);
   modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closeModal(); });
-  const tocToggle = document.getElementById('tocToggle');
-  const tocPanel = document.getElementById('tocPanel');
-  const tocOverlay = document.getElementById('tocOverlay');
-  const tocClose = document.getElementById('tocPanelClose');
-
-  function openToc() {
-    tocPanel.classList.add('open');
-    tocOverlay.classList.add('open');
-    tocToggle.setAttribute('aria-expanded', 'true');
-  }
-  function closeToc() {
-    tocPanel.classList.remove('open');
-    tocOverlay.classList.remove('open');
-    tocToggle.setAttribute('aria-expanded', 'false');
-  }
-
-  tocToggle.addEventListener('click', openToc);
-  tocClose.addEventListener('click', closeToc);
-  tocOverlay.addEventListener('click', closeToc);
-  tocPanel.querySelectorAll('.toc-link').forEach(link => {
-    link.addEventListener('click', closeToc);
-  });
-
 </script>
 </body>
 </html>
